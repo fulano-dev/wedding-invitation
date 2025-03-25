@@ -53,14 +53,14 @@ function App() {
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={window.location.href} />
+        <meta property="og:url" content={typeof window !== 'undefined' ? window.location.href : ''} />
         <meta property="og:title" content={config.data.title} />
         <meta property="og:description" content={config.data.description} />
         <meta property="og:image" content={config.data.ogImage} />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={window.location.href} />
+        <meta property="twitter:url" content={typeof window !== 'undefined' ? window.location.href : ''} />
         <meta property="twitter:title" content={config.data.title} />
         <meta property="twitter:description" content={config.data.description} />
         <meta property="twitter:image" content={config.data.ogImage} />
@@ -82,6 +82,19 @@ function App() {
           </Layout>
         )}
       </AnimatePresence>
+      {!isInvitationOpen ? (<footer className="text-center text-xs text-gray-500 mt-12 pb-6">
+  Desenvolvido com <span className="text-red-400">❤</span> para nossos amigos por 
+  <a href="https://linkedin.com/in/joaopedrovsilva" className="text-blue-500 hover:underline mx-1" target="_blank" rel="noopener noreferrer">
+    João Pedro Vargas
+  </a>
+  e 
+  <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" className="text-blue-500 hover:underline mx-1" target="_blank" rel="noopener noreferrer">
+    Guilherme Mocelin
+  </a>.
+  <br />
+  © 2025 Vargas & Silva Engenharia de Software LTDA · CNPJ 59.458.798/0001-62 · Todos os direitos reservados.
+</footer>
+) : (<div></div>)}
     </HelmetProvider>
   );
 }
