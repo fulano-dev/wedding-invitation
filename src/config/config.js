@@ -28,7 +28,7 @@ const config = {
     ],
     audio: {
       src: "/audio/fulfilling-humming.mp3",
-      title: "Fulfilling Humming",
+      title: "Pra Sonhar - Marcelo Jeneci",
       autoplay: true,
       loop: true
     },
