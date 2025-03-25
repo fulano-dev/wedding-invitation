@@ -3,6 +3,7 @@ import config from '@/config/config';
 import { formatEventDate } from '@/lib/formatEventDate';
 import { motion } from 'framer-motion';
 import { Calendar, Clock } from 'lucide-react';
+import casalImg from '@/photos/casal.jpg'; // ou '../photos/casal.jpg' se não usar alias
 
 const LandingPage = ({ onOpenInvitation }) => (
   <motion.div
@@ -42,7 +43,7 @@ const LandingPage = ({ onOpenInvitation }) => (
           >
             <div className="flex justify-center mt-8">
             <img
-                  src="../public/images/casal.jpg"
+                  src={casalImg}
                   alt="Foto do casal"
                   className="w-48 h-48 rounded-full object-cover shadow-md border-4 border-rose-200 grayscale hover:grayscale-0 transition duration-500"
                 />
