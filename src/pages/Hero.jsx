@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react';
 import config from '@/config/config';
 import { formatEventDate } from '@/lib/formatEventDate';
-// Removed static import of casalImg
+import { Helmet } from 'react-helmet'; // Adicionado para preload das imagens
 import foto1 from '../photos/foto1.JPG';
 import foto2 from '../photos/foto4.JPG';
 import foto3 from '../photos/foto5.JPG';
@@ -123,6 +123,11 @@ export default function Hero() {
 
     return (
         <>
+            <Helmet>
+              <link rel="preload" as="image" href={foto1} />
+              <link rel="preload" as="image" href={foto2} />
+              <link rel="preload" as="image" href={foto3} />
+            </Helmet>
             <section id="home" className="min-h-screen flex flex-col items-center justify-center px-4 py-16 sm:py-20 text-center relative overflow-hidden">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
