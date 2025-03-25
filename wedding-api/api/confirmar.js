@@ -104,7 +104,7 @@ export default async function handler(req, res) {
               <em>Se você for um padrinho, receberá informações sobre as cores do traje.</em></p>
 
               <p>Dúvidas? Fale com os noivos pelo WhatsApp:<br/>
-                <a href="https://wa.me/5551982133389" target="_blank">+55 51 98213-3389</a>
+                <a href="https://wa.me/5551982133389" target="_blank">Carol</a>
               </p>
 
               <h4>Lista de Pessoas que você enviou:</h4>
