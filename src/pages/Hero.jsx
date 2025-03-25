@@ -6,7 +6,7 @@ import { formatEventDate } from '@/lib/formatEventDate';
 // Removed static import of casalImg
 import foto1 from '../photos/foto1.JPG';
 import foto2 from '../photos/foto4.JPG';
-import foto3 from '../photos/foto3.JPG';
+import foto3 from '../photos/foto5.JPG';
 
 const images = [foto1, foto2, foto3];
 
@@ -182,7 +182,7 @@ export default function Hero() {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.98 }}
                             transition={{ duration: 1 }}
-                            className="w-full max-w-2xl h-auto rounded-xl object-cover shadow-md border-4 border-yellow-200 grayscale hover:grayscale-0"
+                            className="w-full max-w-2xl h-auto rounded-xl object-cover shadow-md border-4 border-yellow-200"
                           />
                         </div>
 <motion.p
