@@ -85,6 +85,7 @@ export default async function handler(req, res) {
         });
 
         const codigoPix = staticPix;
+        console.log('Código Pix:', codigoPix);
 
         const mailOptionsGuest = {
           from: process.env.EMAIL_USER,
@@ -99,7 +100,7 @@ export default async function handler(req, res) {
             A sua presença é muito importante para nós, abrimos mão de presentes, porém contamos com uma “ajudinha”, para tornar tudo possível.</p>
             <p><strong>R$200,00</strong><br/>O valor do jantar é individual.</p>
             <p>Clique abaixo para copiar o código Pix:</p>
-            <pre style="white-space: pre-wrap; word-break: break-all; background: #f0f0f0; padding: 10px; border-radius: 5px;">${codigoPix}</pre>
+            <pre style="white-space: pre-wrap; word-break: break-all; background: #f0f0f0; padding: 10px; border-radius: 5px;">${String(codigoPix)}<</pre>
           `
         };
 
