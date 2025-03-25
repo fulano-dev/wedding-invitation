@@ -3,7 +3,7 @@ const config = {
     title: "Casamento de Carol & Marcelo",
     description:
       "Vamos nos casar e convidamos você para celebrar esse momento especial conosco.",
-    groomName: "Carol",
+    groomName: "Caroline",
     brideName: "Marcelo",
     parentGroom: "Sr. Silva & Sra. Silva",
     parentBride: "Sr. Souza & Sra. Souza",
