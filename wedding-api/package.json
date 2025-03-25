@@ -19,5 +19,8 @@
     "pix-qrcode": "^1.0.0",
     "pix-utils": "^2.6.0",
     "stream": "^0.0.3"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
