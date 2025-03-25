@@ -54,19 +54,18 @@ const CalendarButton = ({ icon: Icon, label, onClick, className = "" }) => (
 );
 
 /**
- * SingleEventCard component displays an event card with options to add the event 
- * to various calendars (Google Calendar, Apple Calendar, and Outlook Calendar).
+ * Componente SingleEventCard exibe um cartão de evento com opções para adicionar o evento a vários calendários (Google, Apple e Outlook).
  *
  * @component
- * @param {Object} props - Component props.
- * @param {Object} props.eventData - Object containing event data.
- * @param {string} props.eventData.date - The date of the event (expected format: YYYY-MM-DD).
- * @param {string} props.eventData.startTime - The start time of the event (expected format: HH:mm).
- * @param {string} props.eventData.endTime - The end time of the event (expected format: HH:mm).
- * @param {string} props.eventData.title - The title of the event.
- * @param {string} props.eventData.description - A description of the event.
- * @param {string} props.eventData.location - The location where the event takes place.
- * @param {string} props.eventData.timeZone - The time zone of the event.
+ * @param {Object} props - Propriedades do componente.
+ * @param {Object} props.eventData - Objeto contendo os dados do evento.
+ * @param {string} props.eventData.date - A data do evento (formato esperado: YYYY-MM-DD).
+ * @param {string} props.eventData.startTime - A hora de início do evento (formato esperado: HH:mm).
+ * @param {string} props.eventData.endTime - A hora de término do evento (formato esperado: HH:mm).
+ * @param {string} props.eventData.title - O título do evento.
+ * @param {string} props.eventData.description - Uma descrição do evento.
+ * @param {string} props.eventData.location - O local onde o evento acontece.
+ * @param {string} props.eventData.timeZone - O fuso horário do evento.
  *
  * @example
  * const eventData = {
@@ -81,7 +80,7 @@ const CalendarButton = ({ icon: Icon, label, onClick, className = "" }) => (
  *
  * <SingleEventCard eventData={eventData} />
  *
- * @returns {JSX.Element} A JSX element representing the event card.
+ * @returns {JSX.Element} Um elemento JSX representando o cartão de evento.
  */
 const SingleEventCard = ({ eventData }) => {
   const [showCalendarModal, setShowCalendarModal] = useState(false);
@@ -170,7 +169,7 @@ END:VCALENDAR`;
       >
         <div className="space-y-6 ">
           <div className="flex justify-between  items-center">
-            <h3 className="text-xl font-semibold text-gray-800">Add to Calendar</h3>
+            <h3 className="text-xl font-semibold text-gray-800">Adicionar ao Calendário</h3>
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -206,7 +205,7 @@ END:VCALENDAR`;
   );
 };
 
-// Main EventCards component that handles multiple events
+// Componente principal EventCards que lida com múltiplos eventos
 const EventCards = ({ events }) => {
   return (
     <div className="space-y-4">

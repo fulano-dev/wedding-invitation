@@ -13,7 +13,6 @@ export default function Gifts() {
     const [copiedAccount, setCopiedAccount] = useState(null);
     const [hasAnimated, setHasAnimated] = useState(false);
     
-    // Set animation to run once on component mount
     useEffect(() => {
         setHasAnimated(true);
     }, []);
@@ -24,10 +23,11 @@ export default function Gifts() {
         setTimeout(() => setCopiedAccount(null), 2000);
     };
     
-    return (<>
+    return (
+        <>
         <section id="gifts" className="min-h-screen relative overflow-hidden">
             <div className="container mx-auto px-4 py-20 relative z-10">
-                {/* Section Header */}
+                {/* Cabeçalho da seção */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={hasAnimated ? { opacity: 1, y: 0 } : {}}
@@ -40,7 +40,7 @@ export default function Gifts() {
                         transition={{ delay: 0.2 }}
                         className="inline-block text-rose-500 font-medium"
                     >
-                        Hadiah Pernikahan
+                        Presente de Casamento
                     </motion.span>
 
                     <motion.h2
@@ -49,10 +49,10 @@ export default function Gifts() {
                         transition={{ delay: 0.3 }}
                         className="text-4xl md:text-5xl font-serif text-gray-800"
                     >
-                        Berikan Hadiah
+                        Dê um Presente
                     </motion.h2>
 
-                    {/* Decorative Divider */}
+                    {/* Divisor decorativo */}
                     <motion.div
                         initial={{ scale: 0 }}
                         animate={hasAnimated ? { scale: 1 } : {}}
@@ -64,35 +64,32 @@ export default function Gifts() {
                         <div className="h-[1px] w-12 bg-rose-200" />
                     </motion.div>
 
-                    {/* Message Container */}
+                    {/* Mensagem principal */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={hasAnimated ? { opacity: 1 } : {}}
                         transition={{ delay: 0.5 }}
                         className="space-y-4 max-w-md mx-auto"
                     >
-                        {/* Arabic InsyaAllah */}
+                        {/* Frase em árabe */}
                         <p className="font-arabic text-xl text-gray-800">
                             إن شاء الله
                         </p>
 
-                        {/* Main Message */}
                         <p className="text-gray-600 leading-relaxed">
-                            Insya Allah, Kami Akan Menyalurkan Semua Hadiah yang Diberikan ke Beberapa Masjid dan Lembaga yang Membutuhkan
+                            Se Deus quiser, destinaremos todos os presentes recebidos a algumas mesquitas e instituições que necessitam
                         </p>
 
-                        {/* Arabic Dua */}
                         <div className="space-y-2">
                             <p className="font-arabic text-lg text-gray-800">
                                 جزاكم الله خيرا وبارك الله فيكم
                             </p>
                             <p className="text-gray-600 italic text-sm">
-                                Jazakumullahu khairan, Barakallah fiikum
+                                Que Deus os recompense com o bem, que Deus os abençoe
                             </p>
                         </div>
                     </motion.div>
 
-                    {/* Optional: Additional Decorative Element */}
                     <motion.div
                         initial={{ scale: 0 }}
                         animate={hasAnimated ? { scale: 1 } : {}}
@@ -105,7 +102,7 @@ export default function Gifts() {
                     </motion.div>
                 </motion.div>
 
-                {/* Bank Accounts Grid */}
+                {/* Lista de contas bancárias */}
                 <div className="max-w-2xl mx-auto grid gap-6">
                     {config.data.banks.map((account, index) => (
                         <motion.div
@@ -145,7 +142,7 @@ export default function Gifts() {
                                                 <Copy className="w-4 h-4" />
                                             )}
                                             <span className="text-sm">
-                                                {copiedAccount === account.bank ? 'Copied!' : 'Copy'}
+                                                {copiedAccount === account.bank ? 'Copiado!' : 'Copiar'}
                                             </span>
                                         </motion.button>
                                     </div>
@@ -156,5 +153,6 @@ export default function Gifts() {
                 </div>
             </div>
         </section>
-    </>)
+        </>
+    );
 }

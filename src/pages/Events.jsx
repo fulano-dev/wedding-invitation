@@ -6,7 +6,7 @@ import { Heart } from 'lucide-react'
 export default function Events() {
     return (
         <>
-            {/* Event Section */}
+            {/* Seção de Eventos */}
             <section id="event" className="min-h-screen relative overflow-hidden">
                 <motion.div
                     initial={{ opacity: 0 }}
@@ -15,7 +15,7 @@ export default function Events() {
                     transition={{ duration: 0.8 }}
                     className="relative z-10 container mx-auto px-4 py-20"
                 >
-                    {/* Section Header */}
+                    {/* Cabeçalho da Seção */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -30,7 +30,7 @@ export default function Events() {
                             transition={{ delay: 0.2 }}
                             className="inline-block text-rose-500 font-medium mb-2"
                         >
-                            Catat Tanggal Penting Ini
+                            Anote esta data importante
                         </motion.span>
 
                         <motion.h2
@@ -40,7 +40,7 @@ export default function Events() {
                             transition={{ delay: 0.3 }}
                             className="text-4xl md:text-5xl font-serif text-gray-800 leading-tight"
                         >
-                            Rangkaian Acara Pernikahan
+                            Série de eventos do casamento
                         </motion.h2>
 
                         <motion.p
@@ -50,10 +50,10 @@ export default function Events() {
                             transition={{ delay: 0.4 }}
                             className="text-gray-500 max-w-md mx-auto"
                         >
-                            Kami Mengundang Anda untuk Merayakan Hari Istimewa Sebagai Awal Perjalanan Cinta Kami
+                            Convidamos você para celebrar este dia especial como o início da nossa jornada de amor
                         </motion.p>
 
-                        {/* Decorative Line */}
+                        {/* Linha decorativa */}
                         <motion.div
                             initial={{ scale: 0 }}
                             whileInView={{ scale: 1 }}
@@ -69,7 +69,7 @@ export default function Events() {
                         </motion.div>
                     </motion.div>
 
-                    {/* Events Grid */}
+                    {/* Grade de Eventos */}
                     <motion.div
                         initial={{ opacity: 0, y: 40 }}
                         whileInView={{ opacity: 1, y: 0 }}

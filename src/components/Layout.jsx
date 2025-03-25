@@ -118,7 +118,7 @@ const Layout = ({ children }) => {
     };
   }, [isPlaying]);
 
-  // Toggle music function
+  // Função para alternar a música
   const toggleMusic = async () => {
     if (audioRef.current) {
       try {
@@ -135,7 +135,7 @@ const Layout = ({ children }) => {
     }
   };
 
-  // Handle page unload
+  // Lidar com a saída da página
   useEffect(() => {
     const handleBeforeUnload = () => {
       if (audioRef.current) {
@@ -156,7 +156,7 @@ const Layout = ({ children }) => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Music Control Button with Status Indicator */}
+        {/* Botão de controle de música com indicador de status */}
         <motion.button
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -179,7 +179,7 @@ const Layout = ({ children }) => {
           {children}
         </main>
         <BottomBar />
-        {/* Music Info Toast */}
+        {/* Toast com informações da música */}
         <AnimatePresence>
           {showToast && (
             <motion.div
