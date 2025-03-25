@@ -28,7 +28,7 @@ export default function Events() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.2 }}
-                            className="inline-block text-rose-500 font-medium mb-2"
+                            className="inline-block text-yellow-600 font-medium mb-2"
                         >
                             Esperamos por você
                         </motion.span>
@@ -43,15 +43,20 @@ export default function Events() {
                             Informações
                         </motion.h2>
 
-                        <motion.p
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.4 }}
-                            className="text-gray-500 max-w-md mx-auto"
+                            className="text-gray-500 max-w-md mx-auto space-y-2"
                         >
-                            Convidamos você para celebrar este dia especial como o início da nossa jornada de amor
-                        </motion.p>
+                            <p className="text-center">
+                                “Quanto à promessa que fizemos um ao outro, o Senhor é testemunha para sempre.”
+                            </p>
+                            <p className="text-center text-sm text-gray-400">
+                                1 Sm. 20:23
+                            </p>
+                        </motion.div>
 
                         {/* Linha decorativa */}
                         <motion.div
@@ -61,8 +66,8 @@ export default function Events() {
                             transition={{ delay: 0.5 }}
                             className="flex items-center justify-center gap-4 mt-6"
                         >
-                            <div className="h-[1px] w-12 bg-rose-200" />
-                            <div className="text-rose-400">
+                            <div className="h-[1px] w-12 bg-yellow-200" />
+                            <div className="text-yellow-500">
                                 <Heart className="w-4 h-4" fill="currentColor" />
                             </div>
                             <div className="h-[1px] w-12 bg-rose-200" />
