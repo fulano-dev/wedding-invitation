@@ -71,7 +71,7 @@ export default function Wishes() {
         const pessoas = nomes_individuais.length;
 
         try {
-            const response = await fetch('http://localhost:3001/confirmar', {
+            const response = await fetch('https://wedding-invitation-api-nine.vercel.app/confirmar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
