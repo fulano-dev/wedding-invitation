@@ -2,6 +2,7 @@ const mysql = require('mysql2/promise');
 const nodemailer = require('nodemailer');
 const PDFDocument = require('pdfkit');
 const stream = require('stream');
+const { Pix } = require('pix-qrcode');
 
 export default async function handler(req, res) {
   // CORS headers
@@ -73,8 +74,16 @@ export default async function handler(req, res) {
         
         // Geração do Pix com valor ajustado
         const valorNumerico = pessoas * 200;
-        const valorFormatado = valorNumerico.toFixed(2).replace('.', '');
-        const codigoPix = `00020126900014br.gov.bcb.pix013664b0967a-bc0d-4cd5-bc24-ca76fdb10e210228Casamento Caroline e Marcelo5204000053039865406${valorFormatado}5802BR5923CAROLINE FARIAS MENESES6006CANOAS62130509Casamento6304E814`;
+
+        const codigoPix = new Pix({
+          version: '01',
+          key: '64b0967a-bc0d-4cd5-bc24-ca76fdb10e21',
+          name: 'CAROLINE FARIAS MENESES',
+          city: 'CANOAS',
+          transactionId: 'CASAMENTO2025',
+          message: 'Casamento Caroline e Marcelo',
+          value: valorNumerico.toFixed(2),
+        }).payload();
 
         const mailOptionsGuest = {
           from: process.env.EMAIL_USER,
