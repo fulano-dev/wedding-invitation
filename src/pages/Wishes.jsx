@@ -80,7 +80,7 @@ export default function Wishes() {
         console.log("[DEBUG] Dados coletados:", { nome, email, confirmado, nomes_individuais, pessoas });
 
         try {
-            const response = await fetch('http://localhost:8888/.netlify/functions/confirmar', {
+            const response = await fetch('https://deft-florentine-aa2c54.netlify.app/.netlify/functions/confirmar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
