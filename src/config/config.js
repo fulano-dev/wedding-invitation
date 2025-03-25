@@ -35,13 +35,9 @@ const config = {
     banks: [
       {
         bank: "Banco do Brasil",
-        accountNumber: "1234567890",
-        accountName: "Carol",
-      },
-      {
-        bank: "Caixa Economica Federal",
-        accountNumber: "0987654321",
-        accountName: "Marcelo",
+        accountNumber: "00020126900014br.gov.bcb.pix013664b0967a-bc0d-4cd5-bc24-ca76fdb10e210228Casamento Caroline e Marcelo5204000053039865406200.005802BR5923CAROLINE FARIAS MENESES6006CANOAS62130509Casamento6304E814",
+        description:"Pix Copia e Cola",
+        accountName: "Caroline Farias Menezes",
       }
     ]
   }

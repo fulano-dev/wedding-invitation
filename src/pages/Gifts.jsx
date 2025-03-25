@@ -127,7 +127,7 @@ export default function Gifts() {
 
                                 <div className="mt-4">
                                     <div className="flex items-center justify-between bg-gray-50/80 px-4 py-3 rounded-lg">
-                                        <p className="font-mono text-gray-700">{account.accountNumber}</p>
+                                        <p className="font-mono text-gray-700">{account.description}</p>
                                         <motion.button
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
