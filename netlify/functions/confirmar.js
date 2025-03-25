@@ -12,15 +12,6 @@ exports.handler = async function(event, context) {
   };
   
   const res = {
-    status: (code) => ({
-      json: (data) => ({
-        statusCode: code,
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      }),
-    }),
     setHeader: () => {}
   };
   // CORS headers
@@ -30,12 +21,16 @@ exports.handler = async function(event, context) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return {
+      statusCode: 200
+    };
   }
 
   if (req.method !== 'POST') {
-    return res.status(405).send('Método não permitido');
+    return {
+      statusCode: 405,
+      body: 'Método não permitido'
+    };
   }
 
   const { nome, email, pessoas, nomes_individuais, confirmado, pago } = req.body;
@@ -141,10 +136,18 @@ exports.handler = async function(event, context) {
         };
 
         await transporter.sendMail(mailOptionsGuest);
-        res.status(201).json({ mensagem: 'Confirmação salva e email enviado com sucesso' });
+        return {
+          statusCode: 201,
+          body: JSON.stringify({ mensagem: 'Confirmação salva e email enviado com sucesso' }),
+          headers: { 'Content-Type': 'application/json' }
+        };
       } catch (error) {
         console.error('Erro ao enviar email:', error);
-        res.status(500).json({ erro: 'Confirmação salva, mas falha ao enviar e-mail' });
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ erro: 'Confirmação salva, mas falha ao enviar e-mail' }),
+          headers: { 'Content-Type': 'application/json' }
+        };
       }
     });
 
@@ -154,6 +157,10 @@ exports.handler = async function(event, context) {
     doc.end();
   } catch (err) {
     console.error('Erro no banco:', err);
-    res.status(500).json({ erro: 'Erro ao salvar confirmação' });
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ erro: 'Erro ao salvar confirmação' }),
+      headers: { 'Content-Type': 'application/json' }
+    };
   }
 };
