@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import config from '@/config/config';
 import { formatEventDate } from '@/lib/formatEventDate';
 import { safeBase64 } from '@/lib/base64';
+import casalImg from '@/photos/casal.jpg'; // ou '../photos/casal.jpg' se não usar alias
+
 
 export default function Hero() {
     const [guestName, setGuestName] = useState('');
@@ -114,16 +116,14 @@ export default function Hero() {
                     transition={{ duration: 0.8 }}
                     className="space-y-6 relative z-10"
                 >
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="inline-block mx-auto"
-                    >
-                        <span className="px-4 py-1 text-sm bg-rose-50 text-rose-600 rounded-full border border-rose-200">
-                            Anote esta data importante
-                        </span>
-                    </motion.div>
+                    <motion.h2
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.6 }}
+                            className="text-3xl sm:text-5xl font-serif bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-pink-600"
+                        >
+                            {config.data.groomName} & {config.data.brideName}
+                        </motion.h2>
 
                     <div className="space-y-4">
                         <motion.p
@@ -134,15 +134,28 @@ export default function Hero() {
                         >
                             Se Deus quiser, nós vamos nos casar
                         </motion.p>
-                        <motion.h2
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ delay: 0.6 }}
-                            className="text-3xl sm:text-5xl font-serif bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-pink-600"
-                        >
-                            {config.data.groomName} & {config.data.brideName}
-                        </motion.h2>
+
+                        <div className="flex justify-center mt-8">
+              <img
+                src={casalImg}
+                alt="Foto do casal"
+                className="w-full max-w-2xl h-auto rounded-xl object-cover shadow-md border-4 border-rose-200 grayscale hover:grayscale-0 transition duration-500"
+              />
+            </div>
+                        
                     </div>
+                    <CountdownTimer targetDate={config.data.date} />
+
+                    <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.2 }}
+                        className="inline-block mx-auto"
+                    >
+                        <span className="px-4 py-1 text-sm bg-rose-50 text-rose-600 rounded-full border border-rose-200">
+                            Anote esta data importante
+                        </span>
+                    </motion.div>
 
                     <motion.div
                         initial={{ y: 20, opacity: 0 }}
@@ -217,7 +230,6 @@ export default function Hero() {
                         <div className="absolute -bottom-2 -left-2 w-16 sm:w-24 h-16 sm:h-24 bg-rose-100/20 rounded-full blur-xl" />
                     </motion.div>
 
-                    <CountdownTimer targetDate={config.data.date} />
 
                     <div className="pt-6 relative">
                         <FloatingHearts />

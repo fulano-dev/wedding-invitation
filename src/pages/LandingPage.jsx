@@ -45,7 +45,7 @@ const LandingPage = ({ onOpenInvitation }) => (
               <img
                 src={casalImg}
                 alt="Foto do casal"
-                className="w-full max-w-2xl h-auto rounded-xl object-cover shadow-md border-4 border-rose-200 grayscale hover:grayscale-0 transition duration-500"
+                className="w-64 h-64 md:w-80 md:h-80 rounded-full object-cover shadow-md border-4 border-rose-200 grayscale hover:grayscale-0 transition duration-500"
               />
             </div>
             {/* Couple Names */}
