@@ -40,6 +40,13 @@ const LandingPage = ({ onOpenInvitation }) => (
             transition={{ delay: 0.3 }}
             className="flex flex-col gap-4 mb-6 sm:mb-8 items-center"
           >
+            <div className="flex justify-center mt-8">
+            <img
+                  src="../public/images/casal.jpg"
+                  alt="Foto do casal"
+                  className="w-48 h-48 rounded-full object-cover shadow-md border-4 border-rose-200 grayscale hover:grayscale-0 transition duration-500"
+                />
+              </div>
             <div className="inline-flex flex-col items-center space-y-1 bg-white/80 px-4 sm:px-6 py-2 sm:py-3 rounded-xl">
               <Calendar className="w-5 h-5 text-rose-400" />
               <p className="text-gray-700 font-medium">

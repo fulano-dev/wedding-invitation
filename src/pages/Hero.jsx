@@ -55,6 +55,7 @@ export default function Hero() {
                         animate={{ scale: 1, opacity: 1 }}
                         className="flex flex-col items-center p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-rose-100"
                     >
+                        
                         <span className="text-xl sm:text-2xl font-bold text-rose-600">
                             {timeLeft[interval]}
                         </span>
