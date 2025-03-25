@@ -3,11 +3,17 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react';
 import config from '@/config/config';
 import { formatEventDate } from '@/lib/formatEventDate';
-import casalImg from '@/photos/foto3.JPG';
+// Removed static import of casalImg
+import foto1 from '../photos/foto1.JPG';
+import foto2 from '../photos/foto4.JPG';
+import foto3 from '../photos/foto3.JPG';
+
+const images = [foto1, foto2, foto3];
 
 export default function Hero() {
     const [guestName, setGuestName] = useState('');
     const [mainEmoji, setMainEmoji] = useState("🌻");
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -16,6 +22,13 @@ export default function Hero() {
         if (guestParam) {
             setGuestName(decodeURIComponent(guestParam));
         }
+    }, []);
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % images.length);
+      }, 10000);
+      return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
@@ -161,10 +174,15 @@ export default function Hero() {
                         
 
                         <div className="relative flex justify-center mt-8">
-                          <img
-                            src={casalImg}
+                        <motion.img
+                            key={currentImageIndex}
+                            src={images[currentImageIndex]}
                             alt="Foto do casal"
-                            className="w-full max-w-2xl h-auto rounded-xl object-cover shadow-md border-4 border-yellow-200 grayscale hover:grayscale-0 transition duration-500"
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.98 }}
+                            transition={{ duration: 1 }}
+                            className="w-full max-w-2xl h-auto rounded-xl object-cover shadow-md border-4 border-yellow-200 grayscale hover:grayscale-0"
                           />
                         </div>
 <motion.p
