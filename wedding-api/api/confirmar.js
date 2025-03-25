@@ -84,7 +84,7 @@ export default async function handler(req, res) {
           message: 'Casamento Caroline e Marcelo'
         });
 
-        const codigoPix = staticPix;
+        const codigoPix = staticPix.toBRCode();
         console.log('Código Pix:', codigoPix);
 
         const mailOptionsGuest = {
