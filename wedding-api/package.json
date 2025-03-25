@@ -17,6 +17,7 @@
     "nodemailer": "^6.10.0",
     "pdfkit": "^0.16.0",
     "pix-qrcode": "^1.0.0",
+    "pix-utils": "^2.6.0",
     "stream": "^0.0.3"
   }
 }
