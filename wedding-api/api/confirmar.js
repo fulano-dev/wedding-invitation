@@ -75,7 +75,7 @@ export default async function handler(req, res) {
         // Geração do Pix com valor ajustado
         const valorNumerico = pessoas * 200;
 
-        const codigoPix = new Pix({
+        const codigoPix = Pix.generatePayload({
           version: '01',
           key: '64b0967a-bc0d-4cd5-bc24-ca76fdb10e21',
           name: 'CAROLINE FARIAS MENESES',
@@ -83,7 +83,7 @@ export default async function handler(req, res) {
           transactionId: 'CASAMENTO2025',
           message: 'Casamento Caroline e Marcelo',
           value: valorNumerico.toFixed(2),
-        }).payload();
+        });
 
         const mailOptionsGuest = {
           from: process.env.EMAIL_USER,
