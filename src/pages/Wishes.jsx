@@ -69,6 +69,7 @@ export default function Wishes() {
 
         const nomes_individuais = [nome, ...guestNames.slice(1)];
         const pessoas = nomes_individuais.length;
+        const valorPix = pessoas * 200;
 
         try {
             const response = await fetch('https://api-wedding-alpha.vercel.app/api/confirmar.js', {
@@ -86,7 +87,7 @@ export default function Wishes() {
 
             if (!response.ok) throw new Error('Erro ao enviar confirmação.');
 
-            alert("Confirmação enviada com sucesso!");
+            alert(`Confirmação enviada com sucesso!\nValor do Pix: R$ ${valorPix.toFixed(2)}`);
             setShowConfetti(true);
             setTimeout(() => setShowConfetti(false), 3001);
             setNewWish('');
