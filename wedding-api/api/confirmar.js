@@ -90,17 +90,32 @@ export default async function handler(req, res) {
         const mailOptionsGuest = {
           from: process.env.EMAIL_USER,
           to: email,
-          subject: 'Você confirmou presença no casamento de Caroline & Marcelo',
+          subject: 'Informações Importantes - Confirmação de Presença no Casamento de Caroline & Marcelo',
           html: `
-            <p>Nome das Pessoas Confirmadas:</p>
-            <ul>
-              ${nomes_individuais.map(p => `<li>${p}</li>`).join('')}
-            </ul>
-            <p>Nossa celebração será intimista, com as pessoas que mais amamos e você é uma delas!!<br/>
-            A sua presença é muito importante para nós, abrimos mão de presentes, porém contamos com uma “ajudinha”, para tornar tudo possível.</p>
-            <p><strong>R$200,00</strong><br/>O valor do jantar é individual.</p>
-            <p>Clique abaixo para copiar o código Pix:</p>
-            <pre style="white-space: pre-wrap; word-break: break-all; background: #f0f0f0; padding: 10px; border-radius: 5px;">${String(codigoPix)}<</pre>
+            <div style="font-family: Arial, sans-serif; color: #333;">
+              <h2 style="color: #444;">Informações Importantes - Confirmação de Presença no Casamento de Caroline & Marcelo</h2>
+              <p>Olá <strong>${nome}</strong>, você confirmou sua presença e de mais ${pessoas - 1} pessoa(s) em nosso casamento 💕</p>
+              <p>Nossa celebração será intimista, com as pessoas que mais amamos e você é uma delas!<br/>
+              A sua presença é muito importante para nós. Abrimos mão de presentes, porém contamos com uma “ajudinha”, para tornar tudo possível. 😊</p>
+              <p><strong>Traje:</strong> Esporte Fino<br/>
+              <em>Se você for um padrinho, receberá informações sobre as cores do traje.</em></p>
+
+              <p>Dúvidas? Fale com os noivos pelo WhatsApp:<br/>
+                <a href="https://wa.me/5551982133389" target="_blank">+55 51 98213-3389</a>
+              </p>
+
+              <h4>Lista de Pessoas que você enviou:</h4>
+              <ul>
+                ${nomes_individuais.map(p => `<li>${p}</li>`).join('')}
+              </ul>
+
+              <p><strong>Valor Total:</strong> R$ ${valorNumerico.toFixed(2)}</p>
+              <p><strong>Utilize o código Pix Copia e Cola abaixo para realizar o pagamento até 07/10/2025:</strong></p>
+
+              <pre style="white-space: pre-wrap; word-break: break-word; background: #f0f0f0; padding: 10px; border-radius: 5px;">${codigoPix}</pre>
+
+              <p style="margin-top: 20px;"><strong>QRCode do Pix (reconhecimento automático em apps bancários em breve)</strong></p>
+            </div>
           `
         };
 
