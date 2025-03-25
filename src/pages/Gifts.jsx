@@ -40,7 +40,7 @@ export default function Gifts() {
                         transition={{ delay: 0.2 }}
                         className="inline-block text-yellow-600 font-medium"
                     >
-                        Presente de Casamento
+                        Contamos com você
                     </motion.span>
 
                     <motion.h2
@@ -49,7 +49,7 @@ export default function Gifts() {
                         transition={{ delay: 0.3 }}
                         className="text-4xl md:text-5xl font-serif text-gray-800"
                     >
-                        Dê um Presente
+                        Confirmar Presença
                     </motion.h2>
 
                     {/* Divisor decorativo */}
@@ -71,21 +71,18 @@ export default function Gifts() {
                         transition={{ delay: 0.5 }}
                         className="space-y-4 max-w-md mx-auto"
                     >
-                        {/* Frase em árabe */}
-                        <p className="font-arabic text-xl text-gray-800">
-                            إن شاء الله
-                        </p>
 
                         <p className="text-gray-600 leading-relaxed">
-                            Se Deus quiser, destinaremos todos os presentes recebidos a algumas mesquitas e instituições que necessitam
+                        Nossa celebração será intimista, com as pessoas que mais amamos e você é uma delas!!
+</p>
+<p className="text-gray-600 leading-relaxed">A sua presença é muito importante para nós, abrimos mão de presentes, porém contamos com uma “ajudinha”, para tornar tudo possível.
                         </p>
 
                         <div className="space-y-2">
-                            <p className="font-arabic text-lg text-gray-800">
-                                جزاكم الله خيرا وبارك الله فيكم
-                            </p>
+                            <p className="leading-relaxed text-gray-800">
+                                R$200,00                            </p>
                             <p className="text-gray-600 italic text-sm">
-                                Que Deus os recompense com o bem, que Deus os abençoe
+                                O valor do jantar é individual.
                             </p>
                         </div>
                     </motion.div>
@@ -101,6 +98,7 @@ export default function Gifts() {
                         <div className="h-px w-8 bg-yellow-200/50" />
                     </motion.div>
                 </motion.div>
+                
 
                 {/* Lista de contas bancárias */}
                 <div className="max-w-2xl mx-auto grid gap-6">
@@ -151,7 +149,10 @@ export default function Gifts() {
                         </motion.div>
                     ))}
                 </div>
+                
             </div>
+            
+            
         </section>
         </>
     );
