@@ -2,7 +2,7 @@ const mysql = require('mysql2/promise');
 const nodemailer = require('nodemailer');
 const PDFDocument = require('pdfkit');
 const stream = require('stream');
-const { generatePayload } = require('pix-qrcode');
+const generatePayload = require('pix-qrcode').default;
 
 export default async function handler(req, res) {
   // CORS headers
