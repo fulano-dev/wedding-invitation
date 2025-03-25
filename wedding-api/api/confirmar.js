@@ -80,7 +80,7 @@ export default async function handler(req, res) {
           merchantCity: 'CANOAS',
           pixKey: '64b0967a-bc0d-4cd5-bc24-ca76fdb10e21',
           txid: 'CASAMENTO2025',
-          amount: valorNumerico.toFixed(2),
+          amount: valorNumerico,
           message: 'Casamento Caroline e Marcelo'
         });
 
