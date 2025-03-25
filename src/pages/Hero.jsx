@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react';
 import config from '@/config/config';
 import { formatEventDate } from '@/lib/formatEventDate';
-import casalImg from '@/photos/casal.jpg';
+import casalImg from '@/photos/casal.jpeg';
 
 export default function Hero() {
     const [guestName, setGuestName] = useState('');
