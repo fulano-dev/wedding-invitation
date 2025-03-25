@@ -42,12 +42,28 @@ const LandingPage = ({ onOpenInvitation }) => (
             className="flex flex-col gap-4 mb-6 sm:mb-8 items-center"
           >
             <div className="flex justify-center mt-8">
-            <img
-                  src={casalImg}
-                  alt="Foto do casal"
-                  className="w-48 h-48 rounded-full object-cover shadow-md border-4 border-rose-200 grayscale hover:grayscale-0 transition duration-500"
-                />
+              <img
+                src={casalImg}
+                alt="Foto do casal"
+                className="w-full max-w-2xl h-auto rounded-xl object-cover shadow-md border-4 border-rose-200 grayscale hover:grayscale-0 transition duration-500"
+              />
+            </div>
+            {/* Couple Names */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="text-center space-y-4"
+            >
+              <div className="space-y-2">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-gray-800 leading-tight">
+                  {config.data.groomName}
+                  <span className="text-rose-400 mx-2 sm:mx-3">&</span>
+                  {config.data.brideName}
+                </h1>
+                <div className="h-px w-16 sm:w-24 mx-auto bg-rose-200" />
               </div>
+            </motion.div>
             <div className="inline-flex flex-col items-center space-y-1 bg-white/80 px-4 sm:px-6 py-2 sm:py-3 rounded-xl">
               <Calendar className="w-5 h-5 text-rose-400" />
               <p className="text-gray-700 font-medium">
@@ -60,23 +76,6 @@ const LandingPage = ({ onOpenInvitation }) => (
               <p className="text-gray-700 font-medium">
                 {config.data.time}
               </p>
-            </div>
-          </motion.div>
-
-          {/* Couple Names */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-center space-y-4"
-          >
-            <div className="space-y-2">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-gray-800 leading-tight">
-                {config.data.groomName}
-                <span className="text-rose-400 mx-2 sm:mx-3">&</span>
-                {config.data.brideName}
-              </h1>
-              <div className="h-px w-16 sm:w-24 mx-auto bg-rose-200" />
             </div>
           </motion.div>
 
