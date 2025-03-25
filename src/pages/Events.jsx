@@ -43,20 +43,7 @@ export default function Events() {
                             Informações
                         </motion.h2>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.4 }}
-                            className="text-gray-500 max-w-md mx-auto space-y-2"
-                        >
-                            <p className="text-center">
-                                “Quanto à promessa que fizemos um ao outro, o Senhor é testemunha para sempre.”
-                            </p>
-                            <p className="text-center text-sm text-gray-400">
-                                1 Sm. 20:23
-                            </p>
-                        </motion.div>
+                       
 
                         {/* Linha decorativa */}
                         <motion.div
