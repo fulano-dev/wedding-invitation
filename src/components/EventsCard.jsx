@@ -154,7 +154,7 @@ END:VCALENDAR`;
           </div>
           <div className="flex items-center space-x-3">
             <Clock className="w-5 h-5 text-yellow-600" />
-            <span>{eventData.startTime} - {eventData.endTime} WIB</span>
+            <span>{eventData.startTime} - {eventData.endTime}</span>
           </div>
           <div className="flex items-center space-x-3">
             <MapPin className="w-5 h-5 text-yellow-600" />

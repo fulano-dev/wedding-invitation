@@ -19,8 +19,16 @@ const config = {
     agenda: [
       {
         title: "Cerimônia",
-        date: "22025-10-26T18:30:00-03:00",
+        date: "2025-10-26T18:30:00-03:00",
         startTime: "18:30",
+        endTime: "19:30",
+        location: "CocoBambu, Shopping Iguatemi",
+        address: "Av. João Wallig, 1800 - Jardim Europa, Porto Alegre - RS, 91349-900",
+      },
+      {
+        title: "Coquetel e Jantar",
+        date: "2025-10-26T18:30:00-03:00",
+        startTime: "19:30",
         endTime: "23:00",
         location: "CocoBambu, Shopping Iguatemi",
         address: "Av. João Wallig, 1800 - Jardim Europa, Porto Alegre - RS, 91349-900",
