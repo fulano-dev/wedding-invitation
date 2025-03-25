@@ -83,7 +83,7 @@ function App() {
         )}
       </AnimatePresence>
       {!isInvitationOpen ? (<footer className="text-center text-xs text-gray-500 mt-12 pb-6">
-  Desenvolvido com <span className="text-red-400">❤</span> para nossos amigos por 
+  Desenvolvido com <span className="text-red-400">❤</span> por 
   <a href="https://linkedin.com/in/joaopedrovsilva" className="text-blue-500 hover:underline mx-1" target="_blank" rel="noopener noreferrer">
     João Pedro Vargas
   </a>
@@ -91,6 +91,7 @@ function App() {
   <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" className="text-blue-500 hover:underline mx-1" target="_blank" rel="noopener noreferrer">
     Guilherme Mocelin
   </a>.
+  <br/> Exclusivamente para nossos amigos e afilhados Carol & Marcelo.
   <br />
   © 2025 Vargas & Silva Engenharia de Software LTDA · CNPJ 59.458.798/0001-62 · Todos os direitos reservados.
 </footer>
