@@ -1,3 +1,8 @@
+[dev]
+  command = "npm run dev"
+  targetPort = 5173
+  port = 8888
+  publish = "dist"
 [build]
   functions = "netlify/functions"
   publish = "dist"
@@ -7,3 +12,7 @@
   from = "/api/confirmar"
   to = "/.netlify/functions/confirmar"
   status = 200
+
+  [functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["mysql2"]
