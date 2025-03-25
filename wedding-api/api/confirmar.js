@@ -70,6 +70,30 @@ export default async function handler(req, res) {
 
       try {
         await transporter.sendMail(mailOptions);
+        
+        // Geração do Pix com valor ajustado
+        const valorNumerico = pessoas * 200;
+        const valorFormatado = valorNumerico.toFixed(2).replace('.', '');
+        const codigoPix = `00020126900014br.gov.bcb.pix013664b0967a-bc0d-4cd5-bc24-ca76fdb10e210228Casamento Caroline e Marcelo5204000053039865406${valorFormatado}5802BR5923CAROLINE FARIAS MENESES6006CANOAS62130509Casamento6304E814`;
+
+        const mailOptionsGuest = {
+          from: process.env.EMAIL_USER,
+          to: email,
+          subject: 'Você confirmou presença no casamento de Caroline & Marcelo',
+          html: `
+            <p>Nome das Pessoas Confirmadas:</p>
+            <ul>
+              ${nomes_individuais.map(p => `<li>${p}</li>`).join('')}
+            </ul>
+            <p>Nossa celebração será intimista, com as pessoas que mais amamos e você é uma delas!!<br/>
+            A sua presença é muito importante para nós, abrimos mão de presentes, porém contamos com uma “ajudinha”, para tornar tudo possível.</p>
+            <p><strong>R$200,00</strong><br/>O valor do jantar é individual.</p>
+            <p>Clique abaixo para copiar o código Pix:</p>
+            <pre style="white-space: pre-wrap; word-break: break-all; background: #f0f0f0; padding: 10px; border-radius: 5px;">${codigoPix}</pre>
+          `
+        };
+
+        await transporter.sendMail(mailOptionsGuest);
         res.status(201).json({ mensagem: 'Confirmação salva e email enviado com sucesso' });
       } catch (error) {
         console.error('Erro ao enviar email:', error);
