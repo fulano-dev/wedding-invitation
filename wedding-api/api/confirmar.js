@@ -2,7 +2,7 @@ const mysql = require('mysql2/promise');
 const nodemailer = require('nodemailer');
 const PDFDocument = require('pdfkit');
 const stream = require('stream');
-const { Pix } = require('pix-qrcode');
+const { generatePayload } = require('pix-qrcode');
 
 export default async function handler(req, res) {
   // CORS headers
@@ -75,7 +75,7 @@ export default async function handler(req, res) {
         // Geração do Pix com valor ajustado
         const valorNumerico = pessoas * 200;
 
-        const codigoPix = Pix.generatePayload({
+        const codigoPix = generatePayload({
           version: '01',
           key: '64b0967a-bc0d-4cd5-bc24-ca76fdb10e21',
           name: 'CAROLINE FARIAS MENESES',
