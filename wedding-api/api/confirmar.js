@@ -84,7 +84,7 @@ export default async function handler(req, res) {
           message: 'Casamento Caroline e Marcelo'
         });
 
-        const codigoPix = staticPix.payload();
+        const codigoPix = staticPix;
 
         const mailOptionsGuest = {
           from: process.env.EMAIL_USER,
