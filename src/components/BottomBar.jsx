@@ -14,8 +14,8 @@ const menuItems = [
   { icon: Home, label: 'Início', href: '#home' },
   { icon: CalendarHeart, label: 'Evento', href: '#event' },
   { icon: MapPin, label: 'Local', href: '#location' },
-  { icon: Gift, label: 'Presentes', href: '#gifts' },
-  { icon: MessageCircleHeart, label: 'Desejos', href: '#wishes' },
+  { icon: Gift, label: 'Presentes?', href: '#gifts' },
+  { icon: MessageCircleHeart, label: 'Confirmar!', href: '#wishes' },
 ];
 
 /**

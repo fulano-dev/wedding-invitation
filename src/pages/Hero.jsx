@@ -186,7 +186,7 @@ export default function Hero() {
                             initial={{ opacity: 0, scale: 0.98 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.98 }}
-                            transition={{ duration: 1 }}
+                        transition={{ duration: 2, ease: "easeInOut" }}
                             className="w-full max-w-2xl h-auto rounded-xl object-cover shadow-md border-4 border-yellow-200"
                           />
                         </div>
