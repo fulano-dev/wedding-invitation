@@ -72,7 +72,7 @@ export default function Wishes() {
         const valorPix = pessoas * 200;
 
         try {
-            const response = await fetch('https://api-wedding-alpha.vercel.app/api/confirmar.js', {
+            const response = await fetch('https://deft-florentine-aa2c54.netlify.app/.netlify/functions/confirmar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
