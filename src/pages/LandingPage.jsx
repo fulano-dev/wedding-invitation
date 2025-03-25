@@ -3,7 +3,7 @@ import config from '@/config/config';
 import { formatEventDate } from '@/lib/formatEventDate';
 import { motion } from 'framer-motion';
 import { Calendar, Clock } from 'lucide-react';
-import casalImg from '@/photos/foto1.jpg'; // ou '../photos/casal.jpg' se não usar alias
+import casalImg from '@/photos/foto1.JPG'; // ou '../photos/casal.jpg' se não usar alias
 
 const LandingPage = ({ onOpenInvitation }) => (
   <motion.div
