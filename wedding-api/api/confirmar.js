@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 const PDFDocument = require('pdfkit');
 const stream = require('stream');
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*'); // Ou especifique: 'https://seufrontend.com'
