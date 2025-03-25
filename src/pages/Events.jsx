@@ -30,7 +30,7 @@ export default function Events() {
                             transition={{ delay: 0.2 }}
                             className="inline-block text-rose-500 font-medium mb-2"
                         >
-                            Anote esta data importante
+                            Esperamos por você
                         </motion.span>
 
                         <motion.h2
@@ -40,7 +40,7 @@ export default function Events() {
                             transition={{ delay: 0.3 }}
                             className="text-4xl md:text-5xl font-serif text-gray-800 leading-tight"
                         >
-                            Série de eventos do casamento
+                            Informações
                         </motion.h2>
 
                         <motion.p

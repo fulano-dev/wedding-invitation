@@ -126,7 +126,7 @@ export default function Hero() {
                             transition={{ delay: 0.4 }}
                             className="text-gray-500 font-light italic text-base sm:text-lg"
                         >
-                            Se Deus quiser, nós vamos nos casar
+                            Nós vamos nos casar!
                         </motion.p>
 
                         <div className="flex justify-center mt-8">
@@ -147,7 +147,7 @@ export default function Hero() {
                         className="inline-block mx-auto"
                     >
                         <span className="px-4 py-1 text-sm bg-rose-50 text-rose-600 rounded-full border border-rose-200">
-                            Anote esta data importante
+                            #SaveTheDate
                         </span>
                     </motion.div>
 
@@ -204,10 +204,7 @@ export default function Hero() {
                                     className="space-y-2"
                                 >
                                         <p className="text-gray-500 font-serif italic text-sm">
-                                            Prezado(a)
-                                        </p>
-                                        <p className="text-gray-600 font-medium text-sm">
-                                            Senhor(a)/Convidado(a)
+                                            Querido(a)
                                         </p>
                                         <p className="text-rose-500 font-semibold text-lg">
                                             {guestName ? guestName : "Convidado"}
