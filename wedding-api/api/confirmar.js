@@ -76,12 +76,12 @@ export default async function handler(req, res) {
         const valorNumerico = pessoas * 200;
 
         const staticPix = createStaticPix({
-          merchantName: 'CAROLINE FARIAS MENESES',
+          merchantName: 'Casamento Caroline e Marcelo',
           merchantCity: 'CANOAS',
           pixKey: '64b0967a-bc0d-4cd5-bc24-ca76fdb10e21',
           txid: 'CASAMENTO2025',
-          amount: valorNumerico,
-          message: 'Casamento Caroline e Marcelo'
+          transactionAmount: valorNumerico,
+          infoAdicional: 'Casamento Caroline e Marcelo'
         });
 
         const codigoPix = staticPix.toBRCode();
