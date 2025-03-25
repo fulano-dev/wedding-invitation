@@ -59,7 +59,7 @@ export default async function handler(req, res) {
 
       const mailOptions = {
         from: process.env.EMAIL_USER,
-        to: 'joaopedrovsilva102@gmail.com',
+        to: 'carolinefariasadv@gmail.com',
         subject: `${nome} confirmou presença no seu casamento`,
         text: `${nome} acabou de confirmar presença! Lista atualizada em anexo.`,
         attachments: [{
