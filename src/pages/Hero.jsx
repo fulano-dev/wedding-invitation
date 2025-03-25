@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react';
 import config from '@/config/config';
 import { formatEventDate } from '@/lib/formatEventDate';
-import { safeBase64 } from '@/lib/base64';
+// (Remover a linha)
 import casalImg from '@/photos/casal.jpg'; // ou '../photos/casal.jpg' se não usar alias
 
 
@@ -15,13 +15,7 @@ export default function Hero() {
         const guestParam = urlParams.get('guest');
 
         if (guestParam) {
-            try {
-                const decodedName = safeBase64.decode(guestParam);
-                setGuestName(decodedName);
-            } catch (error) {
-                console.error('Error decoding guest name:', error);
-                setGuestName('');
-            }
+            setGuestName(decodeURIComponent(guestParam));
         }
     }, []);
 
