@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const PDFDocument = require('pdfkit');
 const stream = require('stream');
 const { createStaticPix } = require('pix-utils');
+const QRCode = require('qrcode');
 
 export default async function handler(req, res) {
   // CORS headers
@@ -87,6 +88,8 @@ export default async function handler(req, res) {
         const codigoPix = staticPix.toBRCode();
         console.log('Código Pix:', codigoPix);
 
+        const qrCodeDataUrl = await QRCode.toDataURL(codigoPix);
+
         const mailOptionsGuest = {
           from: process.env.EMAIL_USER,
           to: email,
@@ -114,7 +117,8 @@ export default async function handler(req, res) {
 
               <pre style="white-space: pre-wrap; word-break: break-word; background: #f0f0f0; padding: 10px; border-radius: 5px;">${codigoPix}</pre>
 
-              <p style="margin-top: 20px;"><strong>QRCode do Pix (reconhecimento automático em apps bancários em breve)</strong></p>
+              <p style="margin-top: 20px;"><strong>QRCode do Pix:</strong></p>
+              <img src="${qrCodeDataUrl}" alt="QR Code Pix" style="width: 200px; height: 200px;" />
             </div>
           `
         };
