@@ -5,37 +5,50 @@ const stream = require('stream');
 const { createStaticPix } = require('pix-utils');
 const QRCode = require('qrcode');
 
-exports.handler = async function(event, context) {
+export async function handler(event, context) {
+  const method = event.httpMethod;
+
+  const corsHeaders = {
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
+    'Access-Control-Allow-Headers': 'Content-Type,Authorization'
+  };
+
+  console.log('[DEBUG] Função chamada - método:', method);
+  console.log('[DEBUG] função confirmar.js foi chamada');
+
+  if (method === 'OPTIONS') {
+    console.log('[DEBUG] Passou do OPTIONS');
+    return {
+      statusCode: 200,
+      headers: corsHeaders
+    };
+  }
+
   const req = {
-    method: event.httpMethod,
+    method,
     body: JSON.parse(event.body)
   };
-  
+
+  console.log('[DEBUG] Body recebido:', req.body);
+
   const res = {
     setHeader: () => {}
   };
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*'); // Ou especifique: 'https://seufrontend.com'
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-
-  if (req.method === 'OPTIONS') {
-    return {
-      statusCode: 200
-    };
-  }
 
   if (req.method !== 'POST') {
     return {
       statusCode: 405,
-      body: 'Método não permitido'
+      body: 'Método não permitido',
+      headers: corsHeaders
     };
   }
 
   const { nome, email, pessoas, nomes_individuais, confirmado, pago } = req.body;
 
   try {
+    console.log('[DEBUG] Conectando ao banco...');
     const db = await mysql.createConnection({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
@@ -52,15 +65,18 @@ exports.handler = async function(event, context) {
     );
 
     await Promise.all(values);
+    console.log('[DEBUG] Dados inseridos no banco.');
 
     // Após salvar, buscar todos confirmados
     const [rows] = await db.execute('SELECT nome FROM confirmados');
+    console.log('[DEBUG] Confirmados buscados:', rows.length);
 
     const doc = new PDFDocument();
     const bufferStream = new stream.PassThrough();
     let buffers = [];
     doc.on('data', buffers.push.bind(buffers));
     doc.on('end', async () => {
+      console.log('[DEBUG] PDF gerado. Enviando emails...');
       const pdfData = Buffer.concat(buffers);
 
       const transporter = nodemailer.createTransport({
@@ -83,6 +99,7 @@ exports.handler = async function(event, context) {
       };
 
       try {
+        console.log('[DEBUG] Enviando email para noiva...');
         await transporter.sendMail(mailOptions);
         
         // Geração do Pix com valor ajustado
@@ -135,18 +152,19 @@ exports.handler = async function(event, context) {
           `
         };
 
+        console.log('[DEBUG] Enviando email para convidado:', email);
         await transporter.sendMail(mailOptionsGuest);
         return {
           statusCode: 201,
           body: JSON.stringify({ mensagem: 'Confirmação salva e email enviado com sucesso' }),
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
         };
       } catch (error) {
-        console.error('Erro ao enviar email:', error);
+        console.error('[ERROR] Erro ao salvar confirmação ou enviar email:', error);
         return {
           statusCode: 500,
           body: JSON.stringify({ erro: 'Confirmação salva, mas falha ao enviar e-mail' }),
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
         };
       }
     });
@@ -156,11 +174,11 @@ exports.handler = async function(event, context) {
     rows.forEach((r, i) => doc.text(`${i + 1}. ${r.nome}`));
     doc.end();
   } catch (err) {
-    console.error('Erro no banco:', err);
+    console.error('[ERROR] Erro ao salvar confirmação ou enviar email:', err);
     return {
       statusCode: 500,
       body: JSON.stringify({ erro: 'Erro ao salvar confirmação' }),
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json', ...corsHeaders }
     };
   }
 };

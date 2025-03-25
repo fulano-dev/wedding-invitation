@@ -61,18 +61,26 @@ export default function Wishes() {
 
     const handleSubmitWish = async (e) => {
         e.preventDefault();
+        console.log("[DEBUG] Iniciando envio de confirmação...");
 
         const form = e.target;
         const nome = form.name.value;
         const email = form.email.value;
         const confirmado = form.confirm.value;
 
+        if (confirmado === "Não") {
+            alert("Que pena que não poderá comparecer nesse momento especial, se mudar de ideia será bem vindo!");
+            return;
+        }
+
         const nomes_individuais = [nome, ...guestNames.slice(1)];
         const pessoas = nomes_individuais.length;
         const valorPix = pessoas * 200;
 
+        console.log("[DEBUG] Dados coletados:", { nome, email, confirmado, nomes_individuais, pessoas });
+
         try {
-            const response = await fetch('https://deft-florentine-aa2c54.netlify.app/.netlify/functions/confirmar', {
+            const response = await fetch('http://localhost:8888/.netlify/functions/confirmar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -85,6 +93,9 @@ export default function Wishes() {
                 }),
             });
 
+            const responseBody = await response.text();
+            console.log("[DEBUG] Resposta da API:", response.status, responseBody);
+
             if (!response.ok) throw new Error('Erro ao enviar confirmação.');
 
             alert(`Confirmação enviada com sucesso!\nValor do Pix: R$ ${valorPix.toFixed(2)}`);
@@ -92,7 +103,7 @@ export default function Wishes() {
             setTimeout(() => setShowConfetti(false), 3001);
             setNewWish('');
         } catch (error) {
-            console.error(error);
+            console.error("[DEBUG] Erro no envio da confirmação:", error);
             alert("Ocorreu um erro ao enviar sua confirmação.");
         }
     };
