@@ -24,23 +24,23 @@ export default function Wishes() {
     const [isOpen, setIsOpen] = useState(false);
 
     const options = [
-        { value: 'ATTENDING', label: 'Ya, saya akan hadir' },
-        { value: 'NOT_ATTENDING', label: 'Tidak, saya tidak bisa hadir' },
-        { value: 'MAYBE', label: 'Mungkin, saya akan konfirmasi nanti' }
+        { value: 'ATTENDING', label: 'Sim, estarei presente' },
+        { value: 'NOT_ATTENDING', label: 'Não, não poderei comparecer' },
+        { value: 'MAYBE', label: 'Talvez, confirmarei depois' }
     ];
     // Example wishes - replace with your actual data
     const [wishes, setWishes] = useState([
         {
             id: 1,
             name: "John Doe",
-            message: "Wishing you both a lifetime of love, laughter, and happiness! 🎉",
+            message: "Desejo a vocês uma vida cheia de amor, risos e felicidade! 🎉",
             timestamp: "2024-12-24T23:20:00Z",
             attending: "attending"
         },
         {
             id: 2,
             name: "Natalie",
-            message: "Wishing you both a lifetime of love, laughter, and happiness! 🎉",
+            message: "Desejo a vocês uma vida cheia de amor, risos e felicidade! 🎉",
             timestamp: "2024-12-24T23:20:00Z",
             attending: "attending"
         },
@@ -184,7 +184,7 @@ export default function Wishes() {
                                         {Date.now() - new Date(wish.timestamp).getTime() < 3600000 && (
                                             <div className="absolute top-2 right-2">
                                                 <span className="px-2 py-1 rounded-full bg-rose-100 text-rose-600 text-xs font-medium">
-                                                    New
+                                                    Novo
                                                 </span>
                                             </div>
                                         )}
