@@ -43,9 +43,9 @@ const config = {
     banks: [
       {
         bank: "Banco do Brasil",
-        accountNumber: "00020126900014br.gov.bcb.pix013664b0967a-bc0d-4cd5-bc24-ca76fdb10e210228Casamento Caroline e Marcelo5204000053039865406200.005802BR5923CAROLINE FARIAS MENESES6006CANOAS62130509Casamento6304E814",
-        description:"Pix Copia e Cola",
-        accountName: "Caroline Farias Menezes",
+        accountNumber: "64b0967a-bc0d-4cd5-bc24-ca76fdb10e21",
+        description:"Chave PIX",
+        accountName: "Caroline Farias Meneses",
       }
     ]
   }

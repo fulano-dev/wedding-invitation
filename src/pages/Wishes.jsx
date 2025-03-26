@@ -61,7 +61,8 @@ export default function Wishes() {
 
     const handleSubmitWish = async (e) => {
         e.preventDefault();
-
+        setIsSubmitting(true);
+        
         const form = e.target;
         const nome = form.name.value;
         const email = form.email.value;
@@ -72,7 +73,7 @@ export default function Wishes() {
         const valorPix = pessoas * 200;
 
         try {
-            const response = await fetch('https://api-wedding-alpha.vercel.app/api/confirmar.js', {
+            const response = await fetch('http://localhost:3000/api/confirmar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -85,15 +86,20 @@ export default function Wishes() {
                 }),
             });
 
-            if (!response.ok) throw new Error('Erro ao enviar confirmação.');
+            if (confirmado === 'Não') {
+                alert("Que pena que você não poderá comparecer nesse momento tão especial 💔\nSe mudar de ideia, você pode confirmar até 07/10/2025!");
+            } else {
+                alert(`Confirmação enviada com sucesso!\nVerifique mais informações no seu e-mail.\nValor do Pix: R$ ${valorPix.toFixed(2)}`);
+                setShowConfetti(true);
+                setTimeout(() => setShowConfetti(false), 3001);
+            }
 
-            alert(`Confirmação enviada com sucesso!\nValor do Pix: R$ ${valorPix.toFixed(2)}`);
-            setShowConfetti(true);
-            setTimeout(() => setShowConfetti(false), 3001);
             setNewWish('');
         } catch (error) {
             console.error(error);
             alert("Ocorreu um erro ao enviar sua confirmação.");
+        } finally {
+            setIsSubmitting(false);
         }
     };
     
@@ -118,8 +124,9 @@ export default function Wishes() {
 
             <center><div className="space-y-1">
                             <p className="text-gray-600 italic text-sm">
-                            Após realizar o pagamento, confirme sua presença abaixo.  
+                            Para confirmar sua presença, preencha o formulário para receber as informações de pagamento em seu e-mail.  
                             </p>
+                            <p className="text-gray-600 italic text-sm">A confirmação do pagamento deve ocorrer até 07/10/2025</p>
                         </div></center>
             <div className="container mx-auto px-4 py-15 relative z-10">
                 
@@ -229,11 +236,33 @@ export default function Wishes() {
                           <motion.button
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="flex items-center space-x-2 px-6 py-2.5 rounded-xl text-white font-medium transition-all duration-200 bg-yellow-500 hover:bg-yellow-600"
+                            className="flex items-center justify-center space-x-2 px-6 py-2.5 rounded-xl text-white font-medium transition-all duration-200 bg-yellow-500 hover:bg-yellow-600 disabled:opacity-50"
                             type="submit"
+                            disabled={isSubmitting}
                           >
-                            <Send className="w-4 h-4" />
-                            <span>Confirmar</span>
+                            {isSubmitting ? (
+                              <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                  fill="none"
+                                />
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z"
+                                />
+                              </svg>
+                            ) : (
+                              <>
+                                <Send className="w-4 h-4" />
+                                <span>Confirmar</span>
+                              </>
+                            )}
                           </motion.button>
                         </div>
                       </div>

@@ -43,7 +43,15 @@ export default function Events() {
                             Informações
                         </motion.h2>
 
-                       
+                        <motion.span
+                            initial={{ opacity: 0, y: 10 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2 }}
+                            className="inline-block text-yellow-600 font-medium mb-2"
+                        >
+                            Traje: Esporte Fino
+                        </motion.span>
 
                         {/* Linha decorativa */}
                         <motion.div

@@ -42,7 +42,7 @@ export default async function handler(req, res) {
     await Promise.all(values);
 
     // Após salvar, buscar todos confirmados
-    const [rows] = await db.execute('SELECT nome FROM confirmados');
+    const [rows] = await db.execute('SELECT nome, confirmado FROM confirmados');
 
     const doc = new PDFDocument();
     const bufferStream = new stream.PassThrough();
@@ -60,10 +60,35 @@ export default async function handler(req, res) {
       });
 
       const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: '"Caroline & Marcelo" <' + process.env.EMAIL_USER + '>',
         to: 'carolinefariasadv@gmail.com',
         subject: `${nome} confirmou presença no seu casamento`,
-        text: `${nome} acabou de confirmar presença! Lista atualizada em anexo.`,
+        html: `
+          <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
+            <div style="text-align: center;">
+              <img src="https://i.imgur.com/cxsTmRY.jpeg" alt="Caroline e Marcelo" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;" />
+            </div>
+            <h2 style="color: #e0a100; text-align: center;">🌻 Novo Convidado Confirmado 🌻</h2>
+            <p><strong>${nome}</strong> confirmou presença no casamento!</p>
+            <p><strong>Quantidade de pessoas:</strong> ${pessoas}</p>
+
+            <h4 style="margin-top: 20px;">👥 Lista de Nomes Incluídos:</h4>
+            <ul style="padding-left: 20px;">
+              ${nomes_individuais.map(p => `<li>${p}</li>`).join('')}
+            </ul>
+
+            <p style="margin-top: 25px;">📎 A lista de convidados atualizada está em anexo (PDF).</p>
+
+            <p style="margin-top: 30px; font-size: 6px; color: #777; text-align: center;">
+              Desenvolvido com 💛 por 
+              <a href="https://linkedin.com/in/joaopedrovsilva" target="_blank" style="color: #4b3b0d; text-decoration: none;">João Pedro Vargas</a> 
+              e 
+              <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
+              Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
+              © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
+            </p>
+          </div>
+        `,
         attachments: [{
           filename: 'convidados.pdf',
           content: pdfData
@@ -73,71 +98,152 @@ export default async function handler(req, res) {
       try {
         await transporter.sendMail(mailOptions);
         
-        // Geração do Pix com valor ajustado
-        const valorNumerico = pessoas * 200;
+        if (confirmado !== 'Não') {
+          const valorNumerico = pessoas * 200;
 
-        const staticPix = createStaticPix({
-          merchantName: 'CAROLINE FARIAS MENESES',
-          merchantCity: 'CANOAS',
-          pixKey: '64b0967a-bc0d-4cd5-bc24-ca76fdb10e21',
-          txid: 'CASAMENTO2025',
-          transactionAmount: valorNumerico,
-          infoAdicional: 'Casamento Caroline e Marcelo'
-        });
+          const staticPix = createStaticPix({
+            merchantName: 'CAROLINE FARIAS MENESES',
+            merchantCity: 'CANOAS',
+            pixKey: '64b0967a-bc0d-4cd5-bc24-ca76fdb10e21',
+            txid: 'CASAMENTO2025',
+            transactionAmount: valorNumerico,
+            infoAdicional: 'Casamento Caroline e Marcelo'
+          });
 
-        const codigoPix = staticPix.toBRCode();
-        console.log('Código Pix:', codigoPix);
+          const codigoPix = staticPix.toBRCode();
+          console.log('Código Pix:', codigoPix);
 
-        const qrCodeBuffer = await QRCode.toBuffer(codigoPix);
+          const qrCodeBuffer = await QRCode.toBuffer(codigoPix);
 
-        const mailOptionsGuest = {
-          from: process.env.EMAIL_USER,
-          to: email,
-          subject: 'Informações Importantes - Confirmação de Presença no Casamento de Caroline & Marcelo',
-          html: `
-            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
-              <h2 style="color: #e0a100; text-align: center;">🌻 Confirmação de Presença no Casamento 🌻</h2>
-              <p>Olá <strong>${nome}</strong>, você confirmou sua presença e de mais ${pessoas - 1} pessoa(s) em nosso casamento 💛</p>
-              <p style="margin-top: 15px;">Nossa celebração será intimista, com as pessoas que mais amamos — e você é uma delas!<br/>
-              Abrimos mão de presentes 🎁, mas contamos com uma “ajudinha” para tornar tudo possível 💛</p>
-              
-              <p style="margin-top: 20px;"><strong>👗 Traje:</strong> Esporte Fino<br/>
-              <em>Se você for um padrinho, receberá as instruções sobre a cor do traje.</em></p>
+          const mailOptionsGuest = {
+            from: '"Caroline & Marcelo" <' + process.env.EMAIL_USER + '>',
+            to: email,
+            subject: 'Informações Importantes - Confirmação de Presença no Casamento de Caroline & Marcelo',
+            html: `
+              <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
+                <div style="text-align: center;">
+                  <img src="https://i.imgur.com/cxsTmRY.jpeg" alt="Caroline e Marcelo" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;" />
+                </div>
+                <h2 style="color: #e0a100; text-align: center;">🌻 Confirmação de Presença no Casamento 🌻</h2>
+                <p>Olá <strong>${nome}</strong>, ${
+                  pessoas > 1
+                    ? `você confirmou sua presença e de mais ${pessoas - 1} pessoa(s)`
+                    : 'você confirmou sua presença'
+                } em nosso casamento 💛</p>
+                <p style="margin-top: 15px;">Nossa celebração será intimista, com as pessoas que mais amamos — e você é uma delas!<br/>
+                Abrimos mão de presentes 🎁, mas contamos com uma “ajudinha” para tornar tudo possível 💛</p>
+                
+                <p style="margin-top: 20px;"><strong>👗 Traje:</strong> Esporte Fino<br/>
+                <em>Se você for um padrinho, receberá as instruções sobre a cor do traje.</em></p>
 
-              <p style="margin-top: 20px;">Dúvidas? Fale com os noivos no WhatsApp:<br/>
-                👉 <a href="https://wa.me/5551982133389" target="_blank" style="color: #e0a100;">Carol no WhatsApp</a>
-              </p>
+                <p style="margin-top: 20px;">Dúvidas? Fale com os noivos no WhatsApp:<br/>
+                  👉 <a href="https://wa.me/5551982133389" target="_blank" style="color: #e0a100;">Carol no WhatsApp</a>
+                </p>
 
-              <h4 style="margin-top: 25px; color: #4b3b0d;">👥 Lista de Pessoas que você enviou:</h4>
-              <ul style="padding-left: 20px;">
-                ${nomes_individuais.map(p => `<li>${p}</li>`).join('')}
-              </ul>
+                <h4 style="margin-top: 25px; color: #4b3b0d;">👥 Lista de Pessoas que você enviou:</h4>
+                <ul style="padding-left: 20px;">
+                  ${nomes_individuais.map(p => `<li>${p}</li>`).join('')}
+                </ul>
 
-              <p style="margin-top: 20px;"><strong>💰 Valor Total:</strong> R$ ${valorNumerico.toFixed(2)}</p>
+                <p style="margin-top: 20px;"><strong>💰 Valor Total:</strong> R$ ${valorNumerico.toFixed(2)}</p>
 
-              <p><strong>✨ Utilize o código Pix Copia e Cola abaixo para realizar o pagamento até <u>07/10/2025</u>:</strong></p>
+                <p><strong>✨ Utilize o código Pix Copia e Cola abaixo para realizar o pagamento até <u>07/10/2025</u>:</strong></p>
 
-              <pre style="white-space: pre-wrap; word-break: break-word; background: #f9d976; padding: 15px; border-radius: 8px; font-size: 14px; color: #4b3b0d;">${codigoPix}</pre>
+                <pre onclick="navigator.clipboard.writeText('${codigoPix}')" title="Clique para copiar" style="cursor: pointer; white-space: pre-wrap; word-break: break-word; background: #f9d976; padding: 15px; border-radius: 8px; font-size: 14px; color: #4b3b0d;">
+                  ${codigoPix}
+                </pre>
 
-              <p style="margin-top: 20px;"><strong>📷 QRCode do Pix:</strong></p>
-              <div style="text-align: center; margin-top: 10px;">
-                <img src="cid:qrcodepix" alt="QR Code Pix" style="width: 220px; height: 220px; border: 4px solid #f2c14e; border-radius: 10px;" />
+                <p style="margin-top: 20px;"><strong>📷 QRCode do Pix:</strong></p>
+                <div style="text-align: center; margin-top: 10px;">
+                  <img src="cid:qrcodepix" alt="QR Code Pix" style="width: 220px; height: 220px; border: 4px solid #f2c14e; border-radius: 10px;" />
+                </div>
+
+                <p style="margin-top: 30px; font-size: 6px; color: #777; text-align: center;">
+                  Desenvolvido com 💛 por 
+                  <a href="https://linkedin.com/in/joaopedrovsilva" target="_blank" style="color: #4b3b0d; text-decoration: none;">João Pedro Vargas</a> 
+                  e 
+                  <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
+                  Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
+                  © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
+                </p>
               </div>
+            `,
+            attachments: [{
+              filename: 'qrcode.png',
+              content: qrCodeBuffer,
+              cid: 'qrcodepix'
+            }]
+          };
 
-              <p style="margin-top: 30px; font-size: 12px; color: #777; text-align: center;">
-                Desenvolvido com 💛 por João Pedro Vargas e Guilherme Mocelin.<br/>
-                © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
-              </p>
-            </div>
-          `,
-          attachments: [{
-            filename: 'qrcode.png',
-            content: qrCodeBuffer,
-            cid: 'qrcodepix'
-          }]
-        };
+          await transporter.sendMail(mailOptionsGuest);
+        }
+        
+        if (confirmado === 'Não') {
+          const mailOptionsNaoVai = {
+            from: '"Caroline & Marcelo" <' + process.env.EMAIL_USER + '>',
+            to: email,
+            subject: 'Sentiremos sua falta - Casamento Caroline & Marcelo',
+            html: `
+              <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
+                <div style="text-align: center;">
+                  <img src="https://i.imgur.com/cxsTmRY.jpeg" alt="Caroline e Marcelo" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;" />
+                </div>
+                <h2 style="color: #e0a100; text-align: center;">🌻 Uma pequena mensagem com carinho 🌻</h2>
+                <p>Olá <strong>${nome}</strong>, recebemos sua resposta informando que infelizmente não poderá comparecer ao nosso casamento 😢</p>
+                <p style="margin-top: 15px;">Nossa celebração será intimista, com as pessoas que mais amamos — e você é uma delas!<br/>
+                Sua presença fará muita falta, mas entendemos totalmente e agradecemos de coração 💛</p>
 
-        await transporter.sendMail(mailOptionsGuest);
+                <p style="margin-top: 20px;">Se mudar de ideia, você ainda pode confirmar presença até <u>07/10/2025</u> 😄</p>
+
+                <p style="margin-top: 30px; font-size: 6px; color: #777; text-align: center;">
+                  Desenvolvido com 💛 por 
+                  <a href="https://linkedin.com/in/joaopedrovsilva" target="_blank" style="color: #4b3b0d; text-decoration: none;">João Pedro Vargas</a> 
+                  e 
+                  <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
+                  Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
+                  © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
+                </p>
+              </div>
+            `
+          };
+          await transporter.sendMail(mailOptionsNaoVai);
+          const mailOptionsCarolNaoVai = {
+            from: '"Caroline & Marcelo" <' + process.env.EMAIL_USER + '>',
+            to: 'carolinefariasadv@gmail.com',
+            subject: `${nome} não poderá comparecer ao casamento`,
+            html: `
+              <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
+                <div style="text-align: center;">
+                  <img src="https://i.imgur.com/cxsTmRY.jpeg" alt="Caroline e Marcelo" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;" />
+                </div>
+                <h2 style="color: #e0a100; text-align: center;">🌻 Confirmação de Ausência 🌻</h2>
+                <p><strong>${nome}</strong> informou que <strong>não poderá comparecer</strong> ao casamento.</p>
+
+                <h4 style="margin-top: 20px;">👥 Lista de Nomes Incluídos:</h4>
+                <ul style="padding-left: 20px;">
+                  ${nomes_individuais.map(p => `<li>${p}</li>`).join('')}
+                </ul>
+
+                <p style="margin-top: 25px;">📎 A lista de convidados atualizada está em anexo (PDF).</p>
+
+                <p style="margin-top: 30px; font-size: 6px; color: #777; text-align: center;">
+                  Desenvolvido com 💛 por 
+                  <a href="https://linkedin.com/in/joaopedrovsilva" target="_blank" style="color: #4b3b0d; text-decoration: none;">João Pedro Vargas</a> 
+                  e 
+                  <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
+                  Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
+                  © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
+                </p>
+              </div>
+            `,
+            attachments: [{
+              filename: 'convidados.pdf',
+              content: pdfData
+            }]
+          };
+          await transporter.sendMail(mailOptionsCarolNaoVai);
+        }
+
         res.status(201).json({ mensagem: 'Confirmação salva e email enviado com sucesso' });
       } catch (error) {
         console.error('Erro ao enviar email:', error);
@@ -145,9 +251,24 @@ export default async function handler(req, res) {
       }
     });
 
+    const confirmados = rows.filter(r => r.confirmado !== 'Não');
+    const recusados = rows.filter(r => r.confirmado === 'Não');
+
+    // Página de Confirmados
     doc.fontSize(18).text('Lista de Confirmados', { align: 'center' });
     doc.moveDown();
-    rows.forEach((r, i) => doc.text(`${i + 1}. ${r.nome}`));
+    confirmados.forEach((r, i) => {
+      doc.text(`${i + 1}. ${r.nome}`);
+    });
+
+    // Página de Recusados
+    doc.addPage();
+    doc.fontSize(18).text('Lista de Recusados', { align: 'center' });
+    doc.moveDown();
+    recusados.forEach((r, i) => {
+      doc.text(`${i + 1}. ${r.nome} - NÃO COMPARECERÁ`);
+    });
+
     doc.end();
   } catch (err) {
     console.error('Erro no banco:', err);
