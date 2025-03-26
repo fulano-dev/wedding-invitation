@@ -16,6 +16,8 @@ import {
 import { useState, useEffect } from 'react';
 import { formatEventDate } from '@/lib/formatEventDate';
 
+const API_URL = import.meta.env.VITE_URL_API;
+
 export default function Wishes() {
     const [showConfetti, setShowConfetti] = useState(false);
     const [newWish, setNewWish] = useState('');
@@ -73,7 +75,7 @@ export default function Wishes() {
         const valorPix = pessoas * 200;
 
         try {
-            const response = await fetch('https://api-wedding-alpha.vercel.app/api/confirmar', {
+            const response = await fetch(`${API_URL}/api/confirmar`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -120,6 +122,12 @@ export default function Wishes() {
     
         <section id="wishes" className="min-h-screen relative overflow-hidden">
           
+            {import.meta.env.VITE_AMBIENTE === 'HML' && (
+              <div className="bg-red-600 text-white text-center py-2 font-semibold uppercase tracking-wide">
+                AMBIENTE DE HOMOLOGAÇÃO
+              </div>
+            )}
+
             {showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
 
             <center><div className="space-y-1">
