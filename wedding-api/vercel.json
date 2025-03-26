@@ -1,9 +1,10 @@
 {
   "version": 2,
   "builds": [
-    { "src": "api/confirmar.js", "use": "@vercel/node" }
+    { "src": "api/*.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/api/confirmar", "dest": "api/confirmar.js" }
+    { "src": "/api/confirmar", "dest": "api/confirmar.js" },
+    { "src": "/api/lista", "dest": "api/lista.js" }
   ]
 }
