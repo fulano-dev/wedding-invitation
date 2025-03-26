@@ -73,7 +73,7 @@ export default function Wishes() {
         const valorPix = pessoas * 200;
 
         try {
-            const response = await fetch('http://localhost:3000/api/confirmar', {
+            const response = await fetch('https://api-wedding-alpha.vercel.app/api/confirmar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
