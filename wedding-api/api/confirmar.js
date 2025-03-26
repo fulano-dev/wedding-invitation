@@ -88,37 +88,46 @@ export default async function handler(req, res) {
         const codigoPix = staticPix.toBRCode();
         console.log('Código Pix:', codigoPix);
 
-        const qrCodeDataUrl = await QRCode.toDataURL(codigoPix);
+        const qrCodeBuffer = await QRCode.toBuffer(codigoPix);
 
         const mailOptionsGuest = {
           from: process.env.EMAIL_USER,
           to: email,
           subject: 'Informações Importantes - Confirmação de Presença no Casamento de Caroline & Marcelo',
           html: `
-            <div style="font-family: Arial, sans-serif; color: #333;">
-              <h2 style="color: #444;">Informações Importantes - Confirmação de Presença no Casamento de Caroline & Marcelo</h2>
-              <p>Olá <strong>${nome}</strong>, você confirmou sua presença e de mais ${pessoas - 1} pessoa(s) em nosso casamento 💕</p>
-              <p>Nossa celebração será intimista, com as pessoas que mais amamos e você é uma delas!<br/>
-              A sua presença é muito importante para nós. Abrimos mão de presentes, porém contamos com uma “ajudinha”, para tornar tudo possível. 😊</p>
-              <p><strong>Traje:</strong> Esporte Fino<br/>
-              <em>Se você for um padrinho, receberá informações sobre as cores do traje.</em></p>
+            <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
+              <h2 style="color: #e0a100; text-align: center;">🌻 Confirmação de Presença no Casamento 🌻</h2>
+              <p>Olá <strong>${nome}</strong>, você confirmou sua presença e de mais ${pessoas - 1} pessoa(s) em nosso casamento 💛</p>
+              <p style="margin-top: 15px;">Nossa celebração será intimista, com as pessoas que mais amamos — e você é uma delas!<br/>
+              Abrimos mão de presentes 🎁, mas contamos com uma “ajudinha” para tornar tudo possível 💛</p>
+              
+              <p style="margin-top: 20px;"><strong>👗 Traje:</strong> Esporte Fino<br/>
+              <em>Se você for um padrinho, receberá as instruções sobre a cor do traje.</em></p>
 
-              <p>Dúvidas? Fale com os noivos pelo WhatsApp:<br/>
-                <a href="https://wa.me/5551982133389" target="_blank">Carol</a>
+              <p style="margin-top: 20px;">Dúvidas? Fale com os noivos no WhatsApp:<br/>
+                👉 <a href="https://wa.me/5551982133389" target="_blank" style="color: #e0a100;">Carol no WhatsApp</a>
               </p>
 
-              <h4>Lista de Pessoas que você enviou:</h4>
-              <ul>
+              <h4 style="margin-top: 25px; color: #4b3b0d;">👥 Lista de Pessoas que você enviou:</h4>
+              <ul style="padding-left: 20px;">
                 ${nomes_individuais.map(p => `<li>${p}</li>`).join('')}
               </ul>
 
-              <p><strong>Valor Total:</strong> R$ ${valorNumerico.toFixed(2)}</p>
-              <p><strong>Utilize o código Pix Copia e Cola abaixo para realizar o pagamento até 07/10/2025:</strong></p>
+              <p style="margin-top: 20px;"><strong>💰 Valor Total:</strong> R$ ${valorNumerico.toFixed(2)}</p>
 
-              <pre style="white-space: pre-wrap; word-break: break-word; background: #f0f0f0; padding: 10px; border-radius: 5px;">${codigoPix}</pre>
+              <p><strong>✨ Utilize o código Pix Copia e Cola abaixo para realizar o pagamento até <u>07/10/2025</u>:</strong></p>
 
-              <p style="margin-top: 20px;"><strong>QRCode do Pix:</strong></p>
-              <img src="${qrCodeDataUrl}" alt="QR Code Pix" style="width: 200px; height: 200px;" />
+              <pre style="white-space: pre-wrap; word-break: break-word; background: #f9d976; padding: 15px; border-radius: 8px; font-size: 14px; color: #4b3b0d;">${codigoPix}</pre>
+
+              <p style="margin-top: 20px;"><strong>📷 QRCode do Pix:</strong></p>
+              <div style="text-align: center; margin-top: 10px;">
+                <img src="cid:qrcodepix" alt="QR Code Pix" style="width: 220px; height: 220px; border: 4px solid #f2c14e; border-radius: 10px;" />
+              </div>
+
+              <p style="margin-top: 30px; font-size: 12px; color: #777; text-align: center;">
+                Desenvolvido com 💛 por João Pedro Vargas e Guilherme Mocelin.<br/>
+                © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
+              </p>
             </div>
           `
         };
@@ -139,4 +148,9 @@ export default async function handler(req, res) {
     console.error('Erro no banco:', err);
     res.status(500).json({ erro: 'Erro ao salvar confirmação' });
   }
-};
+        }
+        attachments: [{
+          filename: 'qrcode.png',
+          content: qrCodeBuffer,
+          cid: 'qrcodepix'
+        }]
