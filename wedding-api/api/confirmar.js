@@ -129,7 +129,12 @@ export default async function handler(req, res) {
                 © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
               </p>
             </div>
-          `
+          `,
+          attachments: [{
+            filename: 'qrcode.png',
+            content: qrCodeBuffer,
+            cid: 'qrcodepix'
+          }]
         };
 
         await transporter.sendMail(mailOptionsGuest);
@@ -148,9 +153,4 @@ export default async function handler(req, res) {
     console.error('Erro no banco:', err);
     res.status(500).json({ erro: 'Erro ao salvar confirmação' });
   }
-        }
-        attachments: [{
-          filename: 'qrcode.png',
-          content: qrCodeBuffer,
-          cid: 'qrcodepix'
-        }]
+}
