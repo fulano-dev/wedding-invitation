@@ -6,11 +6,12 @@ const { createStaticPix } = require('pix-utils');
 const QRCode = require('qrcode');
 
 export default async function handler(req, res) {
+  const prefixoAssunto = process.env.AMBIENTE === 'HML' ? 'AMBIENTE DE HOMOLOGAÇÃO - ' : '';
   // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*'); // Ou especifique: 'https://seufrontend.com'
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader('Access-Control-Allow-Headers', '*');
 
   if (req.method === 'OPTIONS') {
     res.status(200).end();
@@ -62,7 +63,7 @@ export default async function handler(req, res) {
       const mailOptions = {
         from: '"Caroline & Marcelo" <' + process.env.EMAIL_USER + '>',
         to: 'carolinefariasadv@gmail.com',
-        subject: `${nome} confirmou presença no seu casamento`,
+        subject: `${prefixoAssunto}${nome} confirmou presença no seu casamento`,
         html: `
           <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
             <div style="text-align: center;">
@@ -118,7 +119,7 @@ export default async function handler(req, res) {
           const mailOptionsGuest = {
             from: '"Caroline & Marcelo" <' + process.env.EMAIL_USER + '>',
             to: email,
-            subject: 'Informações Importantes - Confirmação de Presença no Casamento de Caroline & Marcelo',
+            subject: `${prefixoAssunto}Informações Importantes - Confirmação de Presença no Casamento de Caroline & Marcelo`,
             html: `
               <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
                 <div style="text-align: center;">
@@ -182,7 +183,7 @@ export default async function handler(req, res) {
           const mailOptionsNaoVai = {
             from: '"Caroline & Marcelo" <' + process.env.EMAIL_USER + '>',
             to: email,
-            subject: 'Sentiremos sua falta - Casamento Caroline & Marcelo',
+            subject: `${prefixoAssunto}Sentiremos sua falta - Casamento Caroline & Marcelo`,
             html: `
               <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
                 <div style="text-align: center;">
@@ -210,7 +211,7 @@ export default async function handler(req, res) {
           const mailOptionsCarolNaoVai = {
             from: '"Caroline & Marcelo" <' + process.env.EMAIL_USER + '>',
             to: 'carolinefariasadv@gmail.com',
-            subject: `${nome} não poderá comparecer ao casamento`,
+            subject: `${prefixoAssunto}${nome} não poderá comparecer ao casamento`,
             html: `
               <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
                 <div style="text-align: center;">
