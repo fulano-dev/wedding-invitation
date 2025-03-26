@@ -129,6 +129,14 @@ export default function Hero() {
               <link rel="preload" as="image" href={foto3} />
             </Helmet>
             <section id="home" className="min-h-screen flex flex-col items-center justify-center px-4 py-16 sm:py-20 text-center relative overflow-hidden">
+                {import.meta.env.VITE_AMBIENTE === 'HML' && (
+                    <div className="bg-red-600 text-white text-center py-4 px-4 mb-6 shadow-md w-full">
+                        <h2 className="text-lg sm:text-2xl font-bold uppercase">AMBIENTE DE HOMOLOGAÇÃO</h2>
+                        <p className="text-xs sm:text-sm mt-1">
+                          Esta página é destinada apenas para testes. As confirmações feitas aqui não afetarão a lista oficial de convidados.
+                        </p>
+                    </div>
+                )}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
