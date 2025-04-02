@@ -82,7 +82,13 @@ export default async function handler(req, res) {
 
             <h4 style="margin-top: 20px;">👥 Lista de Nomes Incluídos:</h4>
             <ul style="padding-left: 20px;">
-              ${detalhesPessoas.map(p => `<li>${p.nome} (${p.idade}) — ${p.valor}</li>`).join('')}
+              ${rows
+                .filter(r => r.confirmado !== 'Não')
+                .map(r => {
+                  const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
+                  return detalhes.map(p => `<li>${p.nome} (${p.idade}) — ${p.valor}</li>`).join('');
+                })
+                .join('')}
             </ul>
 
             <p style="margin-top: 25px;">📎 A lista de convidados atualizada está em anexo (PDF).</p>
