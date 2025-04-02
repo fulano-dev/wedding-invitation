@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     return res.status(405).send('Método não permitido');
   }
 
-  const { nome, email, pessoas, nomes_individuais, confirmado, pago } = req.body;
+  const { nome, email, pessoas, nomes_individuais, confirmado, pago, detalhesPessoas } = req.body;
 
   try {
     const db = await mysql.createConnection({
@@ -32,11 +32,12 @@ export default async function handler(req, res) {
       database: process.env.DB_NAME,
     });
 
+
     const values = nomes_individuais.map(n =>
       db.execute(
-        `INSERT INTO confirmados (nome, email, pessoas, nomes_individuais, confirmado, pago)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [n, email, pessoas, JSON.stringify(nomes_individuais), confirmado, pago]
+        `INSERT INTO confirmados (nome, email, pessoas, nomes_individuais, confirmado, pago, detalhes_pessoas)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [n, email, pessoas, JSON.stringify(nomes_individuais), confirmado, pago, JSON.stringify(detalhesPessoas)]
       )
     );
 
@@ -81,7 +82,7 @@ export default async function handler(req, res) {
 
             <h4 style="margin-top: 20px;">👥 Lista de Nomes Incluídos:</h4>
             <ul style="padding-left: 20px;">
-              ${nomes_individuais.map(p => `<li>${p}</li>`).join('')}
+              ${detalhesPessoas.map(p => `<li>${p.nome} (${p.idade}) — ${p.valor}</li>`).join('')}
             </ul>
 
             <p style="margin-top: 25px;">📎 A lista de convidados atualizada está em anexo (PDF).</p>
@@ -106,7 +107,11 @@ export default async function handler(req, res) {
         await transporter.sendMail(mailOptions);
         
         if (confirmado !== 'Não') {
-          const valorNumerico = pessoas * 200;
+          const valorNumerico = detalhesPessoas.reduce((total, pessoa) => {
+            if (pessoa.valor === 'Isento') return total;
+            if (pessoa.valor.includes('100')) return total + 100;
+            return total + 200;
+          }, 0);
 
           const staticPix = createStaticPix({
             merchantName: 'CAROLINE FARIAS MENESES',
@@ -149,7 +154,7 @@ export default async function handler(req, res) {
 
                 <h4 style="margin-top: 25px; color: #4b3b0d;">👥 Lista de Pessoas que você enviou:</h4>
                 <ul style="padding-left: 20px;">
-                  ${nomes_individuais.map(p => `<li>${p}</li>`).join('')}
+                  ${detalhesPessoas.map(p => `<li>${p.nome} (${p.idade}) — ${p.valor}</li>`).join('')}
                 </ul>
 
                 <p style="margin-top: 20px;"><strong>💰 Valor Total:</strong> R$ ${valorNumerico.toFixed(2)}</p>
