@@ -26,6 +26,7 @@ export default function Wishes() {
     const [isOpen, setIsOpen] = useState(false);
     const [guestNames, setGuestNames] = useState([]);
     const [peopleCount, setPeopleCount] = useState(1);
+    const [childStatus, setChildStatus] = useState([]);
 
     const options = [
         { value: 'ATTENDING', label: 'Sim, estarei presente' },
@@ -59,6 +60,7 @@ export default function Wishes() {
 
     useEffect(() => {
         setGuestNames(Array.from({ length: peopleCount }, (_, index) => guestNames[index] || ''));
+        setChildStatus(Array.from({ length: peopleCount }, (_, index) => childStatus[index] || { isChild: false, age: '' }));
     }, [peopleCount]);
 
     const handleSubmitWish = async (e) => {
@@ -72,7 +74,31 @@ export default function Wishes() {
 
         const nomes_individuais = [nome, ...guestNames.slice(1)];
         const pessoas = nomes_individuais.length;
-        const valorPix = pessoas * 200;
+        let valorPix = 0;
+        const detalhesPessoas = nomes_individuais.map((nome, index) => {
+            if (index === 0) {
+                valorPix += 200;
+                return { nome, idade: 'Adulto', valor: 'R$ 200.00' };
+            }
+
+            const isChild = childStatus[index]?.isChild;
+            const age = parseInt(childStatus[index]?.age || '0');
+
+            if (isChild) {
+                if (age <= 6) {
+                    return { nome, idade: `${age} anos`, valor: 'Isento' };
+                } else if (age <= 12) {
+                    valorPix += 100;
+                    return { nome, idade: `${age} anos`, valor: 'R$ 100.00 (50%)' };
+                } else {
+                    valorPix += 200;
+                    return { nome, idade: `${age} anos`, valor: 'R$ 200.00' };
+                }
+            } else {
+                valorPix += 200;
+                return { nome, idade: 'Adulto', valor: 'R$ 200.00' };
+            }
+        });
 
         try {
             const response = await fetch(`${API_URL}/api/confirmar`, {
@@ -84,14 +110,16 @@ export default function Wishes() {
                     pessoas,
                     nomes_individuais,
                     confirmado,
-                    pago: false
+                    pago: false,
+                    detalhesPessoas
                 }),
             });
 
             if (confirmado === 'Não') {
                 alert("Que pena que você não poderá comparecer nesse momento tão especial 💔\nSe mudar de ideia, você pode confirmar até 07/10/2025!");
             } else {
-                alert(`Confirmação enviada com sucesso!\nVerifique mais informações no seu e-mail.\nValor do Pix: R$ ${valorPix.toFixed(2)}`);
+                const detalhesTexto = detalhesPessoas.map(p => `- ${p.nome}: ${p.idade}, ${p.valor}`).join('\n');
+                alert(`Confirmação enviada com sucesso!\nVerifique mais informações no seu e-mail.\n\nValor do Pix: R$ ${valorPix.toFixed(2)}\n\nResumo:\n${detalhesTexto}`);
                 setShowConfetti(true);
                 setTimeout(() => setShowConfetti(false), 3001);
             }
@@ -204,6 +232,37 @@ export default function Wishes() {
                               className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-yellow-300 focus:border-yellow-500 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 transition-all duration-200 text-gray-700 placeholder-gray-400"
                               required
                             />
+                            <div className="flex items-center space-x-2 mt-2">
+                              <input
+                                type="checkbox"
+                                checked={childStatus[index + 1]?.isChild || false}
+                                onChange={(e) => {
+                                  const updated = [...childStatus];
+                                  updated[index + 1] = {
+                                    ...updated[index + 1],
+                                    isChild: e.target.checked,
+                                    age: ''
+                                  };
+                                  setChildStatus(updated);
+                                }}
+                              />
+                              <label className="text-sm text-gray-600">Criança</label>
+                            </div>
+                            {childStatus[index + 1]?.isChild && (
+                              <input
+                                type="number"
+                                min="0"
+                                value={childStatus[index + 1]?.age || ''}
+                                onChange={(e) => {
+                                  const updated = [...childStatus];
+                                  updated[index + 1].age = e.target.value;
+                                  setChildStatus(updated);
+                                }}
+                                placeholder="Idade da criança"
+                                className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-yellow-300 mt-2 text-gray-700 placeholder-gray-400"
+                                required
+                              />
+                            )}
                           </div>
                         ))}
 
