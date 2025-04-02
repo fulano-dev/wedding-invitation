@@ -80,32 +80,16 @@ export default async function handler(req, res) {
             <p><strong>${nome}</strong> confirmou presença no casamento!</p>
             <p><strong>Quantidade de pessoas:</strong> ${pessoas}</p>
 
-            <h4 style="margin-top: 20px;">👥 Lista de Nomes Incluídos:</h4>
-            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-              <thead>
-                <tr style="background-color: #f2c14e; color: #4b3b0d;">
-                  <th style="padding: 8px; border: 1px solid #ddd;">Nome</th>
-                  <th style="padding: 8px; border: 1px solid #ddd;">Idade ou Adulto</th>
-                  <th style="padding: 8px; border: 1px solid #ddd;">Confirmado por</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${rows
-                  .filter(r => r.confirmado !== 'Não')
-                  .map(r => {
-                    const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
-                    if (!detalhes.length) return '';
-                    const confirmador = detalhes[0]?.nome || r.nome;
-                    return detalhes.map(p => `
-                      <tr>
-                        <td style="padding: 8px; border: 1px solid #ddd;">${p.nome}</td>
-                        <td style="padding: 8px; border: 1px solid #ddd;">${p.idade}</td>
-                        <td style="padding: 8px; border: 1px solid #ddd;">${p.nome === confirmador ? '(o Próprio)' : `Confirmado por ${confirmador}`}</td>
-                      </tr>
-                    `).join('');
-                  }).join('')}
-              </tbody>
-            </table>
+            <h4 style="margin-top: 20px;">👥 Lista de Convidados Confirmados:</h4>
+            <ul style="padding-left: 20px;">
+              ${rows
+                .filter(r => r.confirmado === 'Sim')
+                .map(r => {
+                  const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
+                  return detalhes.map(p => `<li>${p.nome} (${p.idade}) — ${p.valor}</li>`).join('');
+                })
+                .join('')}
+            </ul>
 
             <p style="margin-top: 25px;">📎 A lista de convidados atualizada está em anexo (PDF).</p>
 
