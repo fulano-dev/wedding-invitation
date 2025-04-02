@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     return res.status(405).send('Método não permitido');
   }
 
-  const { nome, email, pessoas, nomes_individuais, confirmado, pago, detalhesPessoas } = req.body;
+  const { nome, email, pessoas, nomes_individuais, confirmado, pago } = req.body;
 
   try {
     const db = await mysql.createConnection({
@@ -32,19 +32,18 @@ export default async function handler(req, res) {
       database: process.env.DB_NAME,
     });
 
-
     const values = nomes_individuais.map(n =>
       db.execute(
-        `INSERT INTO confirmados (nome, email, pessoas, nomes_individuais, confirmado, pago, detalhes_pessoas)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [n, email, pessoas, JSON.stringify(nomes_individuais), confirmado, pago, JSON.stringify(detalhesPessoas)]
+        `INSERT INTO confirmados (nome, email, pessoas, nomes_individuais, confirmado, pago)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [n, email, pessoas, JSON.stringify(nomes_individuais), confirmado, pago]
       )
     );
 
     await Promise.all(values);
 
     // Após salvar, buscar todos confirmados
-    const [rows] = await db.execute('SELECT nome, confirmado, detalhes_pessoas FROM confirmados');
+    const [rows] = await db.execute('SELECT nome, confirmado FROM confirmados');
 
     const doc = new PDFDocument();
     const bufferStream = new stream.PassThrough();
@@ -76,7 +75,7 @@ export default async function handler(req, res) {
 
             <h4 style="margin-top: 20px;">👥 Lista de Nomes Incluídos:</h4>
             <ul style="padding-left: 20px;">
-              ${detalhesPessoas.map(p => `<li>${p.nome} (${p.idade}) — ${p.valor}</li>`).join('')}
+              ${nomes_individuais.map(p => `<li>${p}</li>`).join('')}
             </ul>
 
             <p style="margin-top: 25px;">📎 A lista de convidados atualizada está em anexo (PDF).</p>
@@ -101,11 +100,7 @@ export default async function handler(req, res) {
         await transporter.sendMail(mailOptions);
         
         if (confirmado !== 'Não') {
-          const valorNumerico = detalhesPessoas.reduce((total, pessoa) => {
-            if (pessoa.valor === 'Isento') return total;
-            if (pessoa.valor.includes('100')) return total + 100;
-            return total + 200;
-          }, 0);
+          const valorNumerico = pessoas * 200;
 
           const staticPix = createStaticPix({
             merchantName: 'CAROLINE FARIAS MENESES',
@@ -148,7 +143,7 @@ export default async function handler(req, res) {
 
                 <h4 style="margin-top: 25px; color: #4b3b0d;">👥 Lista de Pessoas que você enviou:</h4>
                 <ul style="padding-left: 20px;">
-                  ${detalhesPessoas.map(p => `<li>${p.nome} (${p.idade}) — ${p.valor}</li>`).join('')}
+                  ${nomes_individuais.map(p => `<li>${p}</li>`).join('')}
                 </ul>
 
                 <p style="margin-top: 20px;"><strong>💰 Valor Total:</strong> R$ ${valorNumerico.toFixed(2)}</p>
@@ -258,89 +253,14 @@ export default async function handler(req, res) {
     });
 
     const confirmados = rows.filter(r => r.confirmado !== 'Não');
-    // Exibir convidados antigos que não possuem detalhes_pessoas
-    confirmados.forEach((r) => {
-      const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
-      if (detalhes.length) return; // Já foram processados
- 
-      doc.text(`${contadorGlobal}. ${r.nome}, Adulto`);
-      totalConfirmados++;
-      totalAdultos++;
-      valorTotal += 200;
-      contadorGlobal++;
-    });
     const recusados = rows.filter(r => r.confirmado === 'Não');
 
     // Página de Confirmados
-    let totalConfirmados = 0;
-    let totalAdultos = 0;
-    let totalCriancasMeia = 0;
-    let totalCriancasIsentas = 0;
-    let valorTotal = 0;
-
-    let contadorGlobal = 1;
-    const convidadosPorAutor = {};
-    
-    // Adiciona cabeçalhos da tabela para os confirmados
-    doc.fontSize(14).text('Lista de Confirmados', { align: 'center' });
+    doc.fontSize(18).text('Lista de Confirmados', { align: 'center' });
     doc.moveDown();
-    doc.font('Helvetica-Bold');
-    doc.text('Nome do Convidado', 50, doc.y, { continued: true });
-    doc.text('Idade ou Adulto', 250, doc.y, { continued: true });
-    doc.text('Confirmado por', 400, doc.y);
-    doc.moveDown(0.5);
-    doc.font('Helvetica');
-
-    confirmados.forEach((r) => {
-      const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
-      if (!detalhes.length) return;
-
-      const nomePrincipal = detalhes[0];
-      if (!convidadosPorAutor[nomePrincipal.nome]) {
-        convidadosPorAutor[nomePrincipal.nome] = [];
-      }
-      convidadosPorAutor[nomePrincipal.nome].push(detalhes);
+    confirmados.forEach((r, i) => {
+      doc.text(`${i + 1}. ${r.nome}`);
     });
-
-    Object.entries(convidadosPorAutor).forEach(([autor, detalhes]) => {
-      const primeiroConvidado = detalhes[0][0];
-      doc.text(primeiroConvidado.nome, 50, doc.y, { continued: true });
-      doc.text(primeiroConvidado.idade === 'Adulto' ? 'Adulto' : primeiroConvidado.idade, 250, doc.y, { continued: true });
-      doc.text('(o Próprio)', 400, doc.y);
-      totalConfirmados++;
-      if (primeiroConvidado.valor === 'Isento') totalCriancasIsentas++;
-      else if (primeiroConvidado.valor.includes('100')) {
-        totalCriancasMeia++;
-        valorTotal += 100;
-      } else {
-        totalAdultos++;
-        valorTotal += 200;
-      }
-      contadorGlobal++;
-    
-      detalhes[0].slice(1).forEach((p) => {
-        doc.text(p.nome, 50, doc.y, { continued: true });
-        doc.text(p.idade === 'Adulto' ? 'Adulto' : p.idade, 250, doc.y, { continued: true });
-        doc.text(`(Confirmado por ${primeiroConvidado.nome})`, 400, doc.y);
-        totalConfirmados++;
-        if (p.valor === 'Isento') totalCriancasIsentas++;
-        else if (p.valor.includes('100')) {
-          totalCriancasMeia++;
-          valorTotal += 100;
-        } else {
-          totalAdultos++;
-          valorTotal += 200;
-        }
-        contadorGlobal++;
-      });
-    });
-
-    doc.moveDown();
-    doc.fontSize(12).text(`Total de Convidados Confirmados: ${totalConfirmados}`);
-    doc.text(`• Adultos: ${totalAdultos}`);
-    doc.text(`• Crianças até 12 anos (50%): ${totalCriancasMeia}`);
-    doc.text(`• Crianças até 6 anos (Isento): ${totalCriancasIsentas}`);
-    doc.text(`• Valor Total Estimado: R$ ${valorTotal.toFixed(2)}`);
 
     // Página de Recusados
     doc.addPage();
