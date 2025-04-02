@@ -35,8 +35,8 @@ export default async function handler(req, res) {
 
     const values = detalhesPessoas.map(p =>
       db.execute(
-        `INSERT INTO confirmados (nome, email, pessoas, nomes_individuais, confirmado, pago, detalhes_pessoas, idade) 
-         VALUES (?, ?, ?, ?, ?, ?, NULL, ?)`,
+        `INSERT INTO confirmados (nome, email, pessoas, nomes_individuais, confirmado, pago, idade) 
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [p.nome, email, pessoas, JSON.stringify(nomes_individuais), confirmado, pago, p.idade]
       )
     );
@@ -268,34 +268,20 @@ export default async function handler(req, res) {
 
     // Página de Confirmados
     confirmados.forEach((r) => {
-      const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
-      
-      if (!detalhes.length) {
-        const idade = 'Adulto';
-        doc.text(`${contadorGlobal}. ${r.nome}, ${idade}`);
-        totalConfirmados++;
+      const idadeTexto = !r.idade || parseInt(r.idade) >= 13 ? 'Adulto' : `${r.idade} anos`;
+      doc.text(`${contadorGlobal}. ${r.nome}, ${idadeTexto}`);
+      totalConfirmados++;
+      const idadeNumerica = parseInt(r.idade);
+      if (!r.idade || idadeNumerica >= 13) {
         totalAdultos++;
         valorTotal += 200;
-        contadorGlobal++;
-        return;
+      } else if (idadeNumerica >= 7) {
+        totalCriancasMeia++;
+        valorTotal += 100;
+      } else {
+        totalCriancasIsentas++;
       }
-
-      detalhes.forEach((p) => {
-        const idadeTexto = !p.idade || parseInt(p.idade) >= 13 ? 'Adulto' : `${p.idade} anos`;
-        doc.text(`${contadorGlobal}. ${p.nome}, ${idadeTexto}`);
-        totalConfirmados++;
-        const idadeNumerica = parseInt(p.idade);
-        if (!p.idade || idadeNumerica >= 13) {
-          totalAdultos++;
-          valorTotal += 200;
-        } else if (idadeNumerica >= 7) {
-          totalCriancasMeia++;
-          valorTotal += 100;
-        } else {
-          totalCriancasIsentas++;
-        }
-        contadorGlobal++;
-      });
+      contadorGlobal++;
     });
 
     doc.moveDown();
