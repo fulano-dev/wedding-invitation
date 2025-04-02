@@ -268,11 +268,11 @@ export default async function handler(req, res) {
 
     // Página de Confirmados
     confirmados.forEach((r) => {
-      const idadeTexto = !r.idade || parseInt(r.idade) >= 13 ? 'Adulto' : `${r.idade} anos`;
+      const idadeNumerica = parseInt(r.idade);
+      const idadeTexto = (!r.idade && r.idade !== 0) || isNaN(idadeNumerica) || idadeNumerica === 0 || idadeNumerica >= 13 ? 'Adulto' : `${idadeNumerica} anos`;
       doc.text(`${contadorGlobal}. ${r.nome}, ${idadeTexto}`);
       totalConfirmados++;
-      const idadeNumerica = parseInt(r.idade);
-      if (!r.idade || idadeNumerica >= 13) {
+      if (!r.idade || idadeNumerica === 0 || idadeNumerica >= 13) {
         totalAdultos++;
         valorTotal += 200;
       } else if (idadeNumerica >= 7) {
