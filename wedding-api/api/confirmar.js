@@ -263,12 +263,7 @@ export default async function handler(req, res) {
       }
     });
 
-    const confirmados = rows
-      .filter(r => r.confirmado === 'Sim')
-      .reduce((acc, curr) => {
-        if (!acc.some(r => r.email === curr.email)) acc.push(curr);
-        return acc;
-      }, []);
+    const confirmados = rows.filter(r => r.confirmado === 'Sim');
     const recusados = rows.filter(r => r.confirmado === 'Não');
 
     // Página de Confirmados
@@ -276,7 +271,8 @@ export default async function handler(req, res) {
       const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
       
       if (!detalhes.length) {
-        doc.text(`${contadorGlobal}. ${r.nome}, Adulto`);
+        const idade = 'Adulto';
+        doc.text(`${contadorGlobal}. ${r.nome}, ${idade}`);
         totalConfirmados++;
         totalAdultos++;
         valorTotal += 200;
@@ -284,21 +280,9 @@ export default async function handler(req, res) {
         return;
       }
 
-      const nomePrincipal = detalhes[0];
-      doc.text(`${contadorGlobal}. ${nomePrincipal.nome}, ${nomePrincipal.idade === 'Adulto' ? 'Adulto' : nomePrincipal.idade}`);
-      totalConfirmados++;
-      if (nomePrincipal.valor === 'Isento') totalCriancasIsentas++;
-      else if (nomePrincipal.valor.includes('100')) {
-        totalCriancasMeia++;
-        valorTotal += 100;
-      } else {
-        totalAdultos++;
-        valorTotal += 200;
-      }
-      contadorGlobal++;
-
-      detalhes.slice(1).forEach((p) => {
-        doc.text(`${contadorGlobal}. ${p.nome}, ${p.idade === 'Adulto' ? 'Adulto' : p.idade} (Confirmado por ${nomePrincipal.nome})`);
+      detalhes.forEach((p) => {
+        const idadeTexto = !p.idade || parseInt(p.idade) >= 13 ? 'Adulto' : `${p.idade} anos`;
+        doc.text(`${contadorGlobal}. ${p.nome}, ${idadeTexto}`);
         totalConfirmados++;
         if (p.valor === 'Isento') totalCriancasIsentas++;
         else if (p.valor.includes('100')) {
