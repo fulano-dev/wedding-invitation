@@ -280,16 +280,6 @@ export default async function handler(req, res) {
 
     let contadorGlobal = 1;
     const convidadosPorAutor = {};
-    
-    // Adiciona cabeçalhos da tabela para os confirmados
-    doc.fontSize(14).text('Lista de Confirmados', { align: 'center' });
-    doc.moveDown();
-    doc.font('Helvetica-Bold');
-    doc.text('Nome do Convidado', 50, doc.y, { continued: true });
-    doc.text('Idade ou Adulto', 250, doc.y, { continued: true });
-    doc.text('Confirmado por', 400, doc.y);
-    doc.moveDown(0.5);
-    doc.font('Helvetica');
 
     confirmados.forEach((r) => {
       const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
@@ -304,9 +294,7 @@ export default async function handler(req, res) {
 
     Object.entries(convidadosPorAutor).forEach(([autor, detalhes]) => {
       const primeiroConvidado = detalhes[0][0];
-      doc.text(primeiroConvidado.nome, 50, doc.y, { continued: true });
-      doc.text(primeiroConvidado.idade === 'Adulto' ? 'Adulto' : primeiroConvidado.idade, 250, doc.y, { continued: true });
-      doc.text('(o Próprio)', 400, doc.y);
+      doc.text(`${contadorGlobal}. ${primeiroConvidado.nome}, ${primeiroConvidado.idade === 'Adulto' ? 'Adulto' : primeiroConvidado.idade}`);
       totalConfirmados++;
       if (primeiroConvidado.valor === 'Isento') totalCriancasIsentas++;
       else if (primeiroConvidado.valor.includes('100')) {
@@ -317,11 +305,9 @@ export default async function handler(req, res) {
         valorTotal += 200;
       }
       contadorGlobal++;
-    
+
       detalhes[0].slice(1).forEach((p) => {
-        doc.text(p.nome, 50, doc.y, { continued: true });
-        doc.text(p.idade === 'Adulto' ? 'Adulto' : p.idade, 250, doc.y, { continued: true });
-        doc.text(`(Confirmado por ${primeiroConvidado.nome})`, 400, doc.y);
+        doc.text(`${contadorGlobal}. ${p.nome}, ${p.idade === 'Adulto' ? 'Adulto' : p.idade} (Confirmado por ${primeiroConvidado.nome})`);
         totalConfirmados++;
         if (p.valor === 'Isento') totalCriancasIsentas++;
         else if (p.valor.includes('100')) {
