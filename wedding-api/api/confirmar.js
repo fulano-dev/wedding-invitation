@@ -263,7 +263,12 @@ export default async function handler(req, res) {
       }
     });
 
-    const confirmados = rows.filter(r => r.confirmado !== 'Não');
+    const confirmados = rows
+      .filter(r => r.confirmado === 'Sim')
+      .reduce((acc, curr) => {
+        if (!acc.some(r => r.email === curr.email)) acc.push(curr);
+        return acc;
+      }, []);
     const recusados = rows.filter(r => r.confirmado === 'Não');
 
     // Página de Confirmados
