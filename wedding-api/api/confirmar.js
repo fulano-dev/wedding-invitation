@@ -257,6 +257,13 @@ export default async function handler(req, res) {
       }
     });
 
+    let totalConfirmados = 0;
+    let totalAdultos = 0;
+    let totalCriancasMeia = 0;
+    let totalCriancasIsentas = 0;
+    let valorTotal = 0;
+    let contadorGlobal = 1;
+
     const confirmados = rows.filter(r => r.confirmado !== 'Não');
     // Exibir convidados antigos que não possuem detalhes_pessoas
     confirmados.forEach((r) => {
@@ -270,15 +277,8 @@ export default async function handler(req, res) {
       contadorGlobal++;
     });
     const recusados = rows.filter(r => r.confirmado === 'Não');
-
+    
     // Página de Confirmados
-    let totalConfirmados = 0;
-    let totalAdultos = 0;
-    let totalCriancasMeia = 0;
-    let totalCriancasIsentas = 0;
-    let valorTotal = 0;
-
-    let contadorGlobal = 1;
     const convidadosPorAutor = {};
 
     confirmados.forEach((r) => {
