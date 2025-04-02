@@ -32,17 +32,6 @@ export default async function handler(req, res) {
       database: process.env.DB_NAME,
     });
 
-    // Exibir convidados antigos que não possuem detalhes_pessoas
-    confirmados.forEach((r) => {
-      const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
-      if (detalhes.length) return; // Já foram processados
-
-      doc.text(`${contadorGlobal}. ${r.nome}, Adulto`);
-      totalConfirmados++;
-      totalAdultos++;
-      valorTotal += 200;
-      contadorGlobal++;
-    });
 
     const values = nomes_individuais.map(n =>
       db.execute(
@@ -269,6 +258,17 @@ export default async function handler(req, res) {
     });
 
     const confirmados = rows.filter(r => r.confirmado !== 'Não');
+    // Exibir convidados antigos que não possuem detalhes_pessoas
+    confirmados.forEach((r) => {
+      const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
+      if (detalhes.length) return; // Já foram processados
+ 
+      doc.text(`${contadorGlobal}. ${r.nome}, Adulto`);
+      totalConfirmados++;
+      totalAdultos++;
+      valorTotal += 200;
+      contadorGlobal++;
+    });
     const recusados = rows.filter(r => r.confirmado === 'Não');
 
     // Página de Confirmados
