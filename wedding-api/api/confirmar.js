@@ -33,11 +33,11 @@ export default async function handler(req, res) {
     });
 
 
-    const values = nomes_individuais.map(n =>
+    const values = detalhesPessoas.map(p =>
       db.execute(
-        `INSERT INTO confirmados (nome, email, pessoas, nomes_individuais, confirmado, pago, detalhes_pessoas)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [n, email, pessoas, JSON.stringify(nomes_individuais), confirmado, pago, JSON.stringify(detalhesPessoas)]
+        `INSERT INTO confirmados (nome, email, pessoas, nomes_individuais, confirmado, pago, detalhes_pessoas, idade) 
+         VALUES (?, ?, ?, ?, ?, ?, NULL, ?)`,
+        [p.nome, email, pessoas, JSON.stringify(nomes_individuais), confirmado, pago, p.idade]
       )
     );
 
@@ -284,13 +284,15 @@ export default async function handler(req, res) {
         const idadeTexto = !p.idade || parseInt(p.idade) >= 13 ? 'Adulto' : `${p.idade} anos`;
         doc.text(`${contadorGlobal}. ${p.nome}, ${idadeTexto}`);
         totalConfirmados++;
-        if (p.valor === 'Isento') totalCriancasIsentas++;
-        else if (p.valor.includes('100')) {
+        const idadeNumerica = parseInt(p.idade);
+        if (!p.idade || idadeNumerica >= 13) {
+          totalAdultos++;
+          valorTotal += 200;
+        } else if (idadeNumerica >= 7) {
           totalCriancasMeia++;
           valorTotal += 100;
         } else {
-          totalAdultos++;
-          valorTotal += 200;
+          totalCriancasIsentas++;
         }
         contadorGlobal++;
       });
