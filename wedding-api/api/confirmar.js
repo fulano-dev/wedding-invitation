@@ -32,6 +32,18 @@ export default async function handler(req, res) {
       database: process.env.DB_NAME,
     });
 
+    // Exibir convidados antigos que não possuem detalhes_pessoas
+    confirmados.forEach((r) => {
+      const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
+      if (detalhes.length) return; // Já foram processados
+
+      doc.text(`${contadorGlobal}. ${r.nome}, Adulto`);
+      totalConfirmados++;
+      totalAdultos++;
+      valorTotal += 200;
+      contadorGlobal++;
+    });
+
     const values = nomes_individuais.map(n =>
       db.execute(
         `INSERT INTO confirmados (nome, email, pessoas, nomes_individuais, confirmado, pago, detalhes_pessoas)
