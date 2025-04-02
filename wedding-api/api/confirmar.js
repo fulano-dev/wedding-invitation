@@ -43,8 +43,14 @@ export default async function handler(req, res) {
     await Promise.all(values);
 
     // Após salvar, buscar todos confirmados
-    const [rows] = await db.execute('SELECT nome, confirmado FROM confirmados');
-
+    const [rows] = await db.execute('SELECT nome, confirmado, detalhes_pessoas FROM confirmados');
+    let totalConfirmados = 0;
+    let totalAdultos = 0;
+    let totalCriancasMeia = 0;
+    let totalCriancasIsentas = 0;
+    let valorTotal = 0;
+    let contadorGlobal = 1;
+    
     const doc = new PDFDocument();
     const bufferStream = new stream.PassThrough();
     let buffers = [];
@@ -256,11 +262,54 @@ export default async function handler(req, res) {
     const recusados = rows.filter(r => r.confirmado === 'Não');
 
     // Página de Confirmados
-    doc.fontSize(18).text('Lista de Confirmados', { align: 'center' });
-    doc.moveDown();
-    confirmados.forEach((r, i) => {
-      doc.text(`${i + 1}. ${r.nome}`);
+    const convidadosPorAutor = {};
+
+    confirmados.forEach((r) => {
+      const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
+      if (!detalhes.length) return;
+
+      const nomePrincipal = detalhes[0];
+      if (!convidadosPorAutor[nomePrincipal.nome]) {
+        convidadosPorAutor[nomePrincipal.nome] = [];
+      }
+      convidadosPorAutor[nomePrincipal.nome].push(detalhes);
     });
+
+    Object.entries(convidadosPorAutor).forEach(([autor, detalhes]) => {
+      const primeiroConvidado = detalhes[0][0];
+      doc.text(`${contadorGlobal}. ${primeiroConvidado.nome}, ${primeiroConvidado.idade === 'Adulto' ? 'Adulto' : primeiroConvidado.idade}`);
+      totalConfirmados++;
+      if (primeiroConvidado.valor === 'Isento') totalCriancasIsentas++;
+      else if (primeiroConvidado.valor.includes('100')) {
+        totalCriancasMeia++;
+        valorTotal += 100;
+      } else {
+        totalAdultos++;
+        valorTotal += 200;
+      }
+      contadorGlobal++;
+
+      detalhes[0].slice(1).forEach((p) => {
+        doc.text(`${contadorGlobal}. ${p.nome}, ${p.idade === 'Adulto' ? 'Adulto' : p.idade} (Confirmado por ${primeiroConvidado.nome})`);
+        totalConfirmados++;
+        if (p.valor === 'Isento') totalCriancasIsentas++;
+        else if (p.valor.includes('100')) {
+          totalCriancasMeia++;
+          valorTotal += 100;
+        } else {
+          totalAdultos++;
+          valorTotal += 200;
+        }
+        contadorGlobal++;
+      });
+    });
+
+    doc.moveDown();
+    doc.fontSize(12).text(`Total de Convidados Confirmados: ${totalConfirmados}`);
+    doc.text(`• Adultos: ${totalAdultos}`);
+    doc.text(`• Crianças até 12 anos (50%): ${totalCriancasMeia}`);
+    doc.text(`• Crianças até 6 anos (Isento): ${totalCriancasIsentas}`);
+    doc.text(`• Valor Total Estimado: R$ ${valorTotal.toFixed(2)}`);
 
     // Página de Recusados
     doc.addPage();
