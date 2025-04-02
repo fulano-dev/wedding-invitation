@@ -45,7 +45,13 @@ export default async function handler(req, res) {
 
     // Após salvar, buscar todos confirmados
     const [rows] = await db.execute('SELECT nome, confirmado, detalhes_pessoas FROM confirmados');
-
+    let totalConfirmados = 0;
+    let totalAdultos = 0;
+    let totalCriancasMeia = 0;
+    let totalCriancasIsentas = 0;
+    let valorTotal = 0;
+    let contadorGlobal = 1;
+    
     const doc = new PDFDocument();
     const bufferStream = new stream.PassThrough();
     let buffers = [];
@@ -258,27 +264,9 @@ export default async function handler(req, res) {
     });
 
     const confirmados = rows.filter(r => r.confirmado !== 'Não');
-    // Exibir convidados antigos que não possuem detalhes_pessoas
-    confirmados.forEach((r) => {
-      const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
-      if (detalhes.length) return; // Já foram processados
- 
-      doc.text(`${contadorGlobal}. ${r.nome}, Adulto`);
-      totalConfirmados++;
-      totalAdultos++;
-      valorTotal += 200;
-      contadorGlobal++;
-    });
     const recusados = rows.filter(r => r.confirmado === 'Não');
 
     // Página de Confirmados
-    let totalConfirmados = 0;
-    let totalAdultos = 0;
-    let totalCriancasMeia = 0;
-    let totalCriancasIsentas = 0;
-    let valorTotal = 0;
-
-    let contadorGlobal = 1;
     const convidadosPorAutor = {};
 
     confirmados.forEach((r) => {
