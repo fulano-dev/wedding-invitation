@@ -82,13 +82,7 @@ export default async function handler(req, res) {
 
             <h4 style="margin-top: 20px;">👥 Lista de Convidados Confirmados:</h4>
             <ul style="padding-left: 20px;">
-              ${rows
-                .filter(r => r.confirmado === 'Sim')
-                .map(r => {
-                  const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
-                  return detalhes.map(p => `<li>${p.nome} (${p.idade}) — ${p.valor}</li>`).join('');
-                })
-                .join('')}
+              ${detalhesPessoas.map(p => `<li>${p.nome} (${p.idade}) — ${p.valor}</li>`).join('')}
             </ul>
 
             <p style="margin-top: 25px;">📎 A lista de convidados atualizada está em anexo (PDF).</p>
@@ -273,25 +267,23 @@ export default async function handler(req, res) {
     const recusados = rows.filter(r => r.confirmado === 'Não');
 
     // Página de Confirmados
-    const convidadosPorAutor = {};
-
     confirmados.forEach((r) => {
       const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
-      if (!detalhes.length) return;
+      
+      if (!detalhes.length) {
+        doc.text(`${contadorGlobal}. ${r.nome}, Adulto`);
+        totalConfirmados++;
+        totalAdultos++;
+        valorTotal += 200;
+        contadorGlobal++;
+        return;
+      }
 
       const nomePrincipal = detalhes[0];
-      if (!convidadosPorAutor[nomePrincipal.nome]) {
-        convidadosPorAutor[nomePrincipal.nome] = [];
-      }
-      convidadosPorAutor[nomePrincipal.nome].push(detalhes);
-    });
-
-    Object.entries(convidadosPorAutor).forEach(([autor, detalhes]) => {
-      const primeiroConvidado = detalhes[0][0];
-      doc.text(`${contadorGlobal}. ${primeiroConvidado.nome}, ${primeiroConvidado.idade === 'Adulto' ? 'Adulto' : primeiroConvidado.idade}`);
+      doc.text(`${contadorGlobal}. ${nomePrincipal.nome}, ${nomePrincipal.idade === 'Adulto' ? 'Adulto' : nomePrincipal.idade}`);
       totalConfirmados++;
-      if (primeiroConvidado.valor === 'Isento') totalCriancasIsentas++;
-      else if (primeiroConvidado.valor.includes('100')) {
+      if (nomePrincipal.valor === 'Isento') totalCriancasIsentas++;
+      else if (nomePrincipal.valor.includes('100')) {
         totalCriancasMeia++;
         valorTotal += 100;
       } else {
@@ -300,8 +292,8 @@ export default async function handler(req, res) {
       }
       contadorGlobal++;
 
-      detalhes[0].slice(1).forEach((p) => {
-        doc.text(`${contadorGlobal}. ${p.nome}, ${p.idade === 'Adulto' ? 'Adulto' : p.idade} (Confirmado por ${primeiroConvidado.nome})`);
+      detalhes.slice(1).forEach((p) => {
+        doc.text(`${contadorGlobal}. ${p.nome}, ${p.idade === 'Adulto' ? 'Adulto' : p.idade} (Confirmado por ${nomePrincipal.nome})`);
         totalConfirmados++;
         if (p.valor === 'Isento') totalCriancasIsentas++;
         else if (p.valor.includes('100')) {
