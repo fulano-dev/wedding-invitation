@@ -93,7 +93,7 @@ export default async function handler(req, res) {
               e 
               <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
               Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
-              © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
+              © 2025 Purple Labs - Engenharia de Software I.S — CNPJ: 60.272.060/0001-95
             </p>
           </div>
         `,
@@ -176,7 +176,7 @@ export default async function handler(req, res) {
                   e 
                   <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
                   Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
-                  © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
+                  © 2025 Purple Labs - Engenharia de Software I.S — CNPJ: 60.272.060/0001-95
                 </p>
               </div>
             `,
@@ -213,7 +213,7 @@ export default async function handler(req, res) {
                   e 
                   <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
                   Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
-                  © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
+                  © 2025 Purple Labs - Engenharia de Software I.S — CNPJ: 60.272.060/0001-95
                 </p>
               </div>
             `
@@ -244,7 +244,7 @@ export default async function handler(req, res) {
                   e 
                   <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
                   Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
-                  © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
+                  © 2025 Purple Labs - Engenharia de Software I.S — CNPJ: 60.272.060/0001-95
                 </p>
               </div>
             `,

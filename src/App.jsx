@@ -93,7 +93,7 @@ function App() {
   </a>.
   <br/> Exclusivamente para nossos amigos e afilhados Carol & Marcelo.
   <br />
-  © 2025 Vargas & Silva Engenharia de Software LTDA · CNPJ 59.458.798/0001-62 · Todos os direitos reservados.
+  © 2025 Purple Labs - Engenharia de Software I.S · CNPJ 60.272.060/0001-95 · Todos os direitos reservados.
 </footer>
 ) : (<div></div>)}
     </HelmetProvider>
