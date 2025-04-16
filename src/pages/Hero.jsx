@@ -276,7 +276,7 @@ export default function Hero() {
                                         <p className="text-gray-500 font-serif italic text-sm">
                                             Querido(a) 🌻
                                         </p>
-                                        <p className="text-yellow-600 font-semibold text-lg">
+                                        <p className="text-yellow-600 font-semibold text-2xl sm:text-3xl">
                                             {guestName ? guestName : "Convidado"}
                                         </p>
                                 </motion.div>

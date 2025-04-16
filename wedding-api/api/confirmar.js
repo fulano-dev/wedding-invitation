@@ -33,11 +33,11 @@ export default async function handler(req, res) {
     });
 
 
-    const values = nomes_individuais.map(n =>
+    const values = detalhesPessoas.map(p =>
       db.execute(
-        `INSERT INTO confirmados (nome, email, pessoas, nomes_individuais, confirmado, pago, detalhes_pessoas)
+        `INSERT INTO confirmados (nome, email, pessoas, nomes_individuais, confirmado, pago, idade) 
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [n, email, pessoas, JSON.stringify(nomes_individuais), confirmado, pago, JSON.stringify(detalhesPessoas)]
+        [p.nome, email, pessoas, JSON.stringify(nomes_individuais), confirmado, pago, p.idade]
       )
     );
 
@@ -80,7 +80,7 @@ export default async function handler(req, res) {
             <p><strong>${nome}</strong> confirmou presença no casamento!</p>
             <p><strong>Quantidade de pessoas:</strong> ${pessoas}</p>
 
-            <h4 style="margin-top: 20px;">👥 Lista de Nomes Incluídos:</h4>
+            <h4 style="margin-top: 20px;">👥 Lista de Convidados Confirmados:</h4>
             <ul style="padding-left: 20px;">
               ${detalhesPessoas.map(p => `<li>${p.nome} (${p.idade}) — ${p.valor}</li>`).join('')}
             </ul>
@@ -93,7 +93,7 @@ export default async function handler(req, res) {
               e 
               <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
               Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
-              © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
+              © 2025 Purple Labs - Engenharia de Software I.S — CNPJ: 60.272.060/0001-95
             </p>
           </div>
         `,
@@ -176,7 +176,7 @@ export default async function handler(req, res) {
                   e 
                   <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
                   Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
-                  © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
+                  © 2025 Purple Labs - Engenharia de Software I.S — CNPJ: 60.272.060/0001-95
                 </p>
               </div>
             `,
@@ -213,7 +213,7 @@ export default async function handler(req, res) {
                   e 
                   <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
                   Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
-                  © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
+                  © 2025 Purple Labs - Engenharia de Software I.S — CNPJ: 60.272.060/0001-95
                 </p>
               </div>
             `
@@ -244,7 +244,7 @@ export default async function handler(req, res) {
                   e 
                   <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
                   Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
-                  © 2025 Vargas & Silva Engenharia de Software LTDA — CNPJ: 59.458.798/0001-62
+                  © 2025 Purple Labs - Engenharia de Software I.S — CNPJ: 60.272.060/0001-95
                 </p>
               </div>
             `,
@@ -263,50 +263,25 @@ export default async function handler(req, res) {
       }
     });
 
-    const confirmados = rows.filter(r => r.confirmado !== 'Não');
+    const confirmados = rows.filter(r => r.confirmado === 'Sim');
     const recusados = rows.filter(r => r.confirmado === 'Não');
 
     // Página de Confirmados
-    const convidadosPorAutor = {};
-
     confirmados.forEach((r) => {
-      const detalhes = JSON.parse(r.detalhes_pessoas || '[]');
-      if (!detalhes.length) return;
-
-      const nomePrincipal = detalhes[0];
-      if (!convidadosPorAutor[nomePrincipal.nome]) {
-        convidadosPorAutor[nomePrincipal.nome] = [];
-      }
-      convidadosPorAutor[nomePrincipal.nome].push(detalhes);
-    });
-
-    Object.entries(convidadosPorAutor).forEach(([autor, detalhes]) => {
-      const primeiroConvidado = detalhes[0][0];
-      doc.text(`${contadorGlobal}. ${primeiroConvidado.nome}, ${primeiroConvidado.idade === 'Adulto' ? 'Adulto' : primeiroConvidado.idade}`);
+      const idadeNumerica = parseInt(r.idade);
+      const idadeTexto = (!r.idade && r.idade !== 0) || isNaN(idadeNumerica) || idadeNumerica === 0 || idadeNumerica >= 13 ? 'Adulto' : `${idadeNumerica} anos`;
+      doc.text(`${contadorGlobal}. ${r.nome}, ${idadeTexto}`);
       totalConfirmados++;
-      if (primeiroConvidado.valor === 'Isento') totalCriancasIsentas++;
-      else if (primeiroConvidado.valor.includes('100')) {
+      if (!r.idade || idadeNumerica === 0 || idadeNumerica >= 13) {
+        totalAdultos++;
+        valorTotal += 200;
+      } else if (idadeNumerica >= 7) {
         totalCriancasMeia++;
         valorTotal += 100;
       } else {
-        totalAdultos++;
-        valorTotal += 200;
+        totalCriancasIsentas++;
       }
       contadorGlobal++;
-
-      detalhes[0].slice(1).forEach((p) => {
-        doc.text(`${contadorGlobal}. ${p.nome}, ${p.idade === 'Adulto' ? 'Adulto' : p.idade} (Confirmado por ${primeiroConvidado.nome})`);
-        totalConfirmados++;
-        if (p.valor === 'Isento') totalCriancasIsentas++;
-        else if (p.valor.includes('100')) {
-          totalCriancasMeia++;
-          valorTotal += 100;
-        } else {
-          totalAdultos++;
-          valorTotal += 200;
-        }
-        contadorGlobal++;
-      });
     });
 
     doc.moveDown();
