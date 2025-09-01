@@ -6,6 +6,22 @@ const { createStaticPix } = require('pix-utils');
 const QRCode = require('qrcode');
 
 export default async function handler(req, res) {
+  // Verifica se a coluna 'pago' existe, se não existir, cria
+  try {
+    const dbCheck = await mysql.createConnection({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
+    });
+    const [columns] = await dbCheck.execute("SHOW COLUMNS FROM confirmados LIKE 'pago'");
+    if (columns.length === 0) {
+      await dbCheck.execute("ALTER TABLE confirmados ADD COLUMN pago BOOLEAN DEFAULT FALSE");
+    }
+    await dbCheck.end();
+  } catch (err) {
+    // Ignora erro se tabela não existir ainda
+  }
   const prefixoAssunto = process.env.AMBIENTE === 'HML' ? 'AMBIENTE DE HOMOLOGAÇÃO - ' : '';
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
