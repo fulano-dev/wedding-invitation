@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
+import ConfirmModal from '@/components/ConfirmModal';
 import Confetti from 'react-confetti';
 import Marquee from "@/components/ui/marquee";
 import {
@@ -19,14 +20,17 @@ import { formatEventDate } from '@/lib/formatEventDate';
 const API_URL = import.meta.env.VITE_URL_API;
 
 export default function Wishes() {
-    const [showConfetti, setShowConfetti] = useState(false);
-    const [newWish, setNewWish] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [attendance, setAttendance] = useState('');
-    const [isOpen, setIsOpen] = useState(false);
-    const [guestNames, setGuestNames] = useState([]);
-    const [peopleCount, setPeopleCount] = useState(1);
-    const [childStatus, setChildStatus] = useState([]);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [newWish, setNewWish] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [attendance, setAttendance] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [guestNames, setGuestNames] = useState([]);
+  const [peopleCount, setPeopleCount] = useState(1);
+  const [childStatus, setChildStatus] = useState([]);
+  // Modal state
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState({ nome: '', valorPix: '', detalhesPessoas: [] });
 
     const options = [
         { value: 'ATTENDING', label: 'Sim, estarei presente' },
@@ -100,37 +104,51 @@ export default function Wishes() {
             }
         });
 
-        try {
-            const response = await fetch(`${API_URL}/api/confirmar`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    nome,
-                    email,
-                    pessoas,
-                    nomes_individuais,
-                    confirmado,
-                    pago: false,
-                    detalhesPessoas
-                }),
-            });
+    try {
+      const response = await fetch(`${API_URL}/api/confirmar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome,
+          email,
+          pessoas,
+          nomes_individuais,
+          confirmado,
+          pago: false,
+          detalhesPessoas
+        }),
+      });
 
-            if (confirmado === 'Não') {
-                alert("Que pena que você não poderá comparecer nesse momento tão especial 💔\nSe mudar de ideia, você pode confirmar até 30/09/2025!");
-            } else {
-                const detalhesTexto = detalhesPessoas.map(p => `- ${p.nome}: ${p.idade}, ${p.valor}`).join('\n');
-                alert(`Confirmação enviada com sucesso!\nVerifique mais informações no seu e-mail.\n\nValor do Pix: R$ ${valorPix.toFixed(2)}\n\nResumo:\n${detalhesTexto}`);
-                setShowConfetti(true);
-                setTimeout(() => setShowConfetti(false), 3001);
-            }
+      if (confirmado === 'Não') {
+        setModalData({
+          nome,
+          valorPix: '0,00',
+          detalhesPessoas: detalhesPessoas
+        });
+        setShowModal(true);
+      } else {
+        setModalData({
+          nome,
+          valorPix: valorPix.toFixed(2),
+          detalhesPessoas: detalhesPessoas
+        });
+        setShowModal(true);
+        setShowConfetti(true);
+        setTimeout(() => setShowConfetti(false), 3001);
+      }
 
-            setNewWish('');
-        } catch (error) {
-            console.error(error);
-            alert("Ocorreu um erro ao enviar sua confirmação.");
-        } finally {
-            setIsSubmitting(false);
-        }
+      setNewWish('');
+    } catch (error) {
+      console.error(error);
+      setModalData({
+        nome: '',
+        valorPix: '',
+        detalhesPessoas: []
+      });
+      setShowModal(true);
+    } finally {
+      setIsSubmitting(false);
+    }
     };
     
     const getAttendanceIcon = (status) => {
@@ -147,6 +165,13 @@ export default function Wishes() {
     };
 
     return (<>
+      <ConfirmModal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        nome={modalData.nome}
+        valorPix={modalData.valorPix}
+        detalhesPessoas={modalData.detalhesPessoas}
+      />
     
         <section id="wishes" className="min-h-screen relative overflow-hidden">
           
@@ -158,12 +183,12 @@ export default function Wishes() {
 
             {showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
 
-            <center><div className="space-y-1">
-                            <p className="text-gray-600 italic text-sm">
-                            Para confirmar sua presença, preencha o formulário para receber as informações de pagamento em seu e-mail.  
-                            </p>
-                            <p className="text-gray-600 italic text-sm">A confirmação do pagamento deve ocorrer até 30/09/2025</p>
-                        </div></center>
+      <center><div className="space-y-1">
+              <p className="text-neutral-300 italic text-sm">
+              Para confirmar sua presença, preencha o formulário para receber as informações de pagamento em seu e-mail.  
+              </p>
+              <p className="text-neutral-300 italic text-sm">A confirmação do pagamento deve ocorrer até 30/09/2025</p>
+            </div></center>
             <div className="container mx-auto px-4 py-15 relative z-10">
                 
                 {/* Wishes Form */}
@@ -177,24 +202,24 @@ export default function Wishes() {
                       onSubmit={handleSubmitWish}
                       className="relative"
                     >
-                      <div className="backdrop-blur-sm bg-[rgb(254_249_195)] p-6 rounded-2xl border border-yellow-300/50 shadow-lg space-y-4">
+                      <div className="bg-black p-6 rounded-2xl border border-yellow-300/50 space-y-4">
                         {/* Nome */}
                         <div className="space-y-2">
-                          <div className="flex items-center space-x-2 text-gray-500 text-sm mb-1">
+                          <div className="flex items-center space-x-2 text-yellow-400 text-sm mb-1">
                             <User className="w-4 h-4" />
                             <span>Seu Nome</span>
                           </div>
                           <input
                             name="name"
                             placeholder="Digite seu nome..."
-                            className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-yellow-300 focus:border-yellow-500 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 transition-all duration-200 text-gray-700 placeholder-gray-400"
+                            className="w-full px-4 py-2.5 rounded-xl bg-black/60 border border-yellow-300 focus:border-yellow-500 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 transition-all duration-200 text-neutral-100 placeholder-neutral-400"
                             required
                           />
                         </div>
 
                         {/* Número de pessoas */}
                         <div className="space-y-2">
-                          <div className="flex items-center space-x-2 text-gray-500 text-sm mb-1">
+                          <div className="flex items-center space-x-2 text-neutral-400 text-sm mb-1">
                             <User className="w-4 h-4" />
                             <span>Quantas pessoas (incluindo você)?</span>
                           </div>
@@ -202,7 +227,7 @@ export default function Wishes() {
                             name="people"
                             value={peopleCount}
                             onChange={(e) => setPeopleCount(parseInt(e.target.value))}
-                            className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-yellow-300 focus:border-yellow-500 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 transition-all duration-200 text-gray-700"
+                            className="w-full px-4 py-2.5 rounded-xl bg-black/60 border border-yellow-300 focus:border-yellow-500 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 transition-all duration-200 text-neutral-100"
                             required
                           >
                             {[1, 2, 3, 4, 5].map((num) => (
@@ -216,7 +241,7 @@ export default function Wishes() {
                         {/* Nomes individuais */}
                         {Array.from({ length: peopleCount - 1 }).map((_, index) => (
                           <div key={index} className="space-y-2">
-                            <div className="flex items-center space-x-2 text-gray-500 text-sm mb-1">
+                            <div className="flex items-center space-x-2 text-neutral-400 text-sm mb-1">
                               <User className="w-4 h-4" />
                               <span>Nome da pessoa {index + 2}</span>
                             </div>
@@ -229,7 +254,7 @@ export default function Wishes() {
                                 setGuestNames(updatedNames);
                               }}
                               placeholder={`Pessoa ${index + 2}`}
-                              className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-yellow-300 focus:border-yellow-500 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 transition-all duration-200 text-gray-700 placeholder-gray-400"
+                              className="w-full px-4 py-2.5 rounded-xl bg-black/60 border border-yellow-300 focus:border-yellow-500 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 transition-all duration-200 text-neutral-100 placeholder-neutral-400"
                               required
                             />
                             <div className="flex items-center space-x-2 mt-2">
@@ -246,7 +271,7 @@ export default function Wishes() {
                                   setChildStatus(updated);
                                 }}
                               />
-                              <label className="text-sm text-gray-600">Criança</label>
+                              <label className="text-sm text-neutral-300">Criança</label>
                             </div>
                             {childStatus[index + 1]?.isChild && (
                               <input
@@ -259,7 +284,7 @@ export default function Wishes() {
                                   setChildStatus(updated);
                                 }}
                                 placeholder="Idade da criança"
-                                className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-yellow-300 mt-2 text-gray-700 placeholder-gray-400"
+                                className="w-full px-4 py-2.5 rounded-xl bg-black/60 border border-yellow-300 mt-2 text-neutral-100 placeholder-neutral-400"
                                 required
                               />
                             )}
@@ -268,7 +293,7 @@ export default function Wishes() {
 
                         {/* Email */}
                         <div className="space-y-2">
-                          <div className="flex items-center space-x-2 text-gray-500 text-sm mb-1">
+                          <div className="flex items-center space-x-2 text-neutral-400 text-sm mb-1">
                             <MessageCircle className="w-4 h-4" />
                             <span>Seu E-mail</span>
                           </div>
@@ -276,21 +301,21 @@ export default function Wishes() {
                             name="email"
                             type="email"
                             placeholder="Digite seu email..."
-                            className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-yellow-300 focus:border-yellow-500 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 transition-all duration-200 text-gray-700 placeholder-gray-400"
+                            className="w-full px-4 py-2.5 rounded-xl bg-black/60 border border-yellow-300 focus:border-yellow-500 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 transition-all duration-200 text-neutral-100 placeholder-neutral-400"
                             required
                           />
                         </div>
 
                         {/* Confirma Presença */}
                         <div className="space-y-2">
-                          <div className="flex items-center space-x-2 text-gray-500 text-sm mb-1">
+                          <div className="flex items-center space-x-2 text-neutral-400 text-sm mb-1">
                             <Calendar className="w-4 h-4" />
                             <span>Você irá comparecer?</span>
                           </div>
                           <select
                             name="confirm"
                             required
-                            className="w-full px-4 py-2.5 rounded-xl bg-white/50 border border-yellow-300 focus:border-yellow-500 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 transition-all duration-200 text-gray-700"
+                            className="w-full px-4 py-2.5 rounded-xl bg-black/60 border border-yellow-300 focus:border-yellow-500 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 transition-all duration-200 text-neutral-100"
                           >
                             <option value="">Selecione</option>
                             <option value="Sim">Sim</option>

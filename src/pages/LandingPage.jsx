@@ -17,9 +17,9 @@ const LandingPage = ({ onOpenInvitation }) => (
       </div>
     )}
     {/* Decorative Background */}
-    <div className="absolute inset-0 bg-gradient-to-b from-white via-yellow-50/30 to-white" />
-    <div className="absolute top-0 right-0 w-64 h-64 md:w-96 md:h-96 bg-yellow-100/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
-    <div className="absolute bottom-0 left-0 w-64 h-64 md:w-96 md:h-96 bg-yellow-200/20 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
+  <div className="absolute inset-0 bg-black" />
+  <div className="absolute top-0 right-0 w-64 h-64 md:w-96 md:h-96 bg-yellow-900/30 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
+  <div className="absolute bottom-0 left-0 w-64 h-64 md:w-96 md:h-96 bg-yellow-900/30 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
 
     {/* Main Content */}
     <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
@@ -30,7 +30,7 @@ const LandingPage = ({ onOpenInvitation }) => (
         className="w-full max-w-md"
       >
         {/* Card Container */}
-        <div className="backdrop-blur-sm bg-white/50 p-6 sm:p-8 md:p-10 rounded-2xl border border-yellow-100/50 shadow-xl">
+  <div className="bg-black p-6 sm:p-8 md:p-10 rounded-2xl border border-yellow-100/50">
           {/* Top Decorative Line */}
           <div className="flex items-center justify-center gap-3 mb-6 sm:mb-8">
             <div className="h-px w-12 sm:w-16 bg-yellow-200/50" />
@@ -60,7 +60,7 @@ const LandingPage = ({ onOpenInvitation }) => (
               className="text-center space-y-4"
             >
               <div className="space-y-2">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-gray-800 leading-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-neutral-100 leading-tight">
                   {config.data.groomName}
                   <span className="text-yellow-500 mx-2 sm:mx-3">&</span>
                   {config.data.brideName}
@@ -68,16 +68,16 @@ const LandingPage = ({ onOpenInvitation }) => (
                 <div className="h-px w-16 sm:w-24 mx-auto bg-yellow-200" />
               </div>
             </motion.div>
-            <div className="inline-flex flex-col items-center space-y-1 bg-white/80 px-4 sm:px-6 py-2 sm:py-3 rounded-xl">
+            <div className="inline-flex flex-col items-center space-y-1 bg-black/80 px-4 sm:px-6 py-2 sm:py-3 rounded-xl">
               <Calendar className="w-5 h-5 text-yellow-500" />
-              <p className="text-gray-700 font-medium">
+              <p className="text-neutral-200 font-medium">
                 {formatEventDate(config.data.date)}
               </p>
             </div>
 
-            <div className="inline-flex flex-col items-center space-y-1 bg-white/80 px-4 sm:px-6 py-2 sm:py-3 rounded-xl">
+            <div className="inline-flex flex-col items-center space-y-1 bg-black/80 px-4 sm:px-6 py-2 sm:py-3 rounded-xl">
               <Clock className="w-5 h-5 text-yellow-500" />
-              <p className="text-gray-700 font-medium">
+              <p className="text-neutral-200 font-medium">
                 {config.data.time}
               </p>
             </div>

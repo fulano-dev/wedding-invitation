@@ -38,7 +38,7 @@ export default function Events() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.3 }}
-                            className="text-4xl md:text-5xl font-serif text-gray-800 leading-tight"
+                            className="text-4xl md:text-5xl font-serif text-neutral-100 leading-tight"
                         >
                             Informações
                         </motion.h2>

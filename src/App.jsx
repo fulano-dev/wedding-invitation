@@ -82,7 +82,7 @@ function App() {
           </Layout>
         )}
       </AnimatePresence>
-      {!isInvitationOpen ? (<footer className="text-center text-xs text-gray-500 mt-12 pb-6">
+  {!isInvitationOpen ? (<footer className="text-center text-xs text-yellow-400 mt-12 pb-6">
   Desenvolvido com <span className="text-red-400">❤</span> por 
   <a href="https://linkedin.com/in/joaopedrovsilva" className="text-blue-500 hover:underline mx-1" target="_blank" rel="noopener noreferrer">
     João Pedro Vargas

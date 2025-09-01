@@ -69,13 +69,13 @@ export default function Hero() {
                 {Object.keys(timeLeft).map((interval) => (
                     <div
                         key={interval}
-                        className="flex flex-col items-center p-3 bg-white/80 backdrop-blur-sm rounded-xl border border-yellow-100 transition-all duration-500"
+                        className="flex flex-col items-center p-3 bg-black/80 backdrop-blur-sm rounded-xl border border-yellow-100 transition-all duration-500"
                     >
                         
                         <span className="text-xl sm:text-2xl font-bold text-yellow-600">
                             {timeLeft[interval]}
                         </span>
-                        <span className="text-xs text-gray-500 capitalize">{interval}</span>
+                        <span className="text-xs text-neutral-300 capitalize">{interval}</span>
                     </div>
                 ))}
             </div>
@@ -174,12 +174,12 @@ export default function Hero() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.4 }}
-                            className="text-gray-500 max-w-md mx-auto space-y-2"
+                            className="text-neutral-100 max-w-md mx-auto space-y-2"
                         >
                             <p className="text-center">
                                 “Quanto à promessa que fizemos um ao outro, o Senhor é testemunha para sempre.”
                             </p>
-                            <p className="text-center text-sm text-gray-400">
+                            <p className="text-center text-sm text-yellow-400">
                                 1 Sm. 20:23
                             </p>
                         </motion.div>
@@ -202,7 +202,7 @@ export default function Hero() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.4 }}
-                            className="text-gray-500 font-light italic text-base sm:text-lg"
+                            className="text-neutral-100 font-light italic text-base sm:text-lg"
                         >
                             Nós vamos nos casar!
                         </motion.p>
@@ -227,7 +227,7 @@ export default function Hero() {
                         transition={{ delay: 0.8 }}
                         className="relative max-w-md mx-auto"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-b from-yellow-50/50 to-white/50 backdrop-blur-md rounded-2xl" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/80 to-black/80 backdrop-blur-md rounded-2xl" />
 
                         <div className="relative px-4 sm:px-8 py-8 sm:py-10 rounded-2xl border border-yellow-100/50">
                             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-px">
@@ -243,7 +243,7 @@ export default function Hero() {
                                         className="flex items-center justify-center space-x-2"
                                     >
                                         <Calendar className="w-4 h-4 text-yellow-500" />
-                                        <span className="text-gray-700 font-medium text-sm sm:text-base">
+                                        <span className="text-yellow-400 font-medium text-sm sm:text-base">
                                             {formatEventDate(config.data.date, "full")}
                                         </span>
                                     </motion.div>
@@ -255,7 +255,7 @@ export default function Hero() {
                                         className="flex items-center justify-center space-x-2"
                                     >
                                         <Clock className="w-4 h-4 text-yellow-500" />
-                                        <span className="text-gray-700 font-medium text-sm sm:text-base">
+                                        <span className="text-yellow-400 font-medium text-sm sm:text-base">
                                             {config.data.time}
                                         </span>
                                     </motion.div>
@@ -273,7 +273,7 @@ export default function Hero() {
                                     transition={{ delay: 1.1 }}
                                     className="space-y-2"
                                 >
-                                        <p className="text-gray-500 font-serif italic text-sm">
+                                        <p className="text-neutral-100 font-serif italic text-sm">
                                             Querido(a) 🌻
                                         </p>
                                         <p className="text-yellow-600 font-semibold text-2xl sm:text-3xl">
