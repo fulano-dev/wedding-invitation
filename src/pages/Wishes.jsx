@@ -116,7 +116,7 @@ export default function Wishes() {
             });
 
             if (confirmado === 'Não') {
-                alert("Que pena que você não poderá comparecer nesse momento tão especial 💔\nSe mudar de ideia, você pode confirmar até 07/10/2025!");
+                alert("Que pena que você não poderá comparecer nesse momento tão especial 💔\nSe mudar de ideia, você pode confirmar até 30/09/2025!");
             } else {
                 const detalhesTexto = detalhesPessoas.map(p => `- ${p.nome}: ${p.idade}, ${p.valor}`).join('\n');
                 alert(`Confirmação enviada com sucesso!\nVerifique mais informações no seu e-mail.\n\nValor do Pix: R$ ${valorPix.toFixed(2)}\n\nResumo:\n${detalhesTexto}`);
@@ -162,7 +162,7 @@ export default function Wishes() {
                             <p className="text-gray-600 italic text-sm">
                             Para confirmar sua presença, preencha o formulário para receber as informações de pagamento em seu e-mail.  
                             </p>
-                            <p className="text-gray-600 italic text-sm">A confirmação do pagamento deve ocorrer até 07/10/2025</p>
+                            <p className="text-gray-600 italic text-sm">A confirmação do pagamento deve ocorrer até 30/09/2025</p>
                         </div></center>
             <div className="container mx-auto px-4 py-15 relative z-10">
                 

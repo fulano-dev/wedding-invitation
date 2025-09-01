@@ -93,7 +93,7 @@ export default async function handler(req, res) {
               e 
               <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
               Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
-              © 2025 Purple Labs - Engenharia de Software I.S — CNPJ: 60.272.060/0001-95
+              © 2025
             </p>
           </div>
         `,
@@ -159,7 +159,7 @@ export default async function handler(req, res) {
 
                 <p style="margin-top: 20px;"><strong>💰 Valor Total:</strong> R$ ${valorNumerico.toFixed(2)}</p>
 
-                <p><strong>✨ Utilize o código Pix Copia e Cola abaixo para realizar o pagamento até <u>07/10/2025</u>:</strong></p>
+                <p><strong>✨ Utilize o código Pix Copia e Cola abaixo para realizar o pagamento até <u>30/09/2025</u>:</strong></p>
 
                 <pre onclick="navigator.clipboard.writeText('${codigoPix}')" title="Clique para copiar" style="cursor: pointer; white-space: pre-wrap; word-break: break-word; background: #f9d976; padding: 15px; border-radius: 8px; font-size: 14px; color: #4b3b0d;">
                   ${codigoPix}
@@ -205,7 +205,7 @@ export default async function handler(req, res) {
                 <p style="margin-top: 15px;">Nossa celebração será intimista, com as pessoas que mais amamos — e você é uma delas!<br/>
                 Sua presença fará muita falta, mas entendemos totalmente e agradecemos de coração 💛</p>
 
-                <p style="margin-top: 20px;">Se mudar de ideia, você ainda pode confirmar presença até <u>07/10/2025</u> 😄</p>
+                <p style="margin-top: 20px;">Se mudar de ideia, você ainda pode confirmar presença até <u>30/09/2025</u> 😄</p>
 
                 <p style="margin-top: 30px; font-size: 6px; color: #777; text-align: center;">
                   Desenvolvido com 💛 por 
