@@ -72,11 +72,11 @@ export default async function handler(req, res) {
         to: 'carolinefariasadv@gmail.com',
         subject: `${prefixoAssunto}${nome} confirmou presença no seu casamento`,
         html: `
-          <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
+          <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; background-color: #111; padding: 30px; border-radius: 10px;">
             <div style="text-align: center;">
-              <img src="https://i.imgur.com/cxsTmRY.jpeg" alt="Caroline e Marcelo" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;" />
+              <img src="https://i.imgur.com/cxsTmRY.jpeg" alt="Caroline e Marcelo" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px; border: 3px solid #FFD700;" />
             </div>
-            <h2 style="color: #e0a100; text-align: center;">🌻 Novo Convidado Confirmado 🌻</h2>
+            <h2 style="color: #FFD700; text-align: center;">🌻 Novo Convidado Confirmado 🌻</h2>
             <p><strong>${nome}</strong> confirmou presença no casamento!</p>
             <p><strong>Quantidade de pessoas:</strong> ${pessoas}</p>
 
@@ -87,11 +87,11 @@ export default async function handler(req, res) {
 
             <p style="margin-top: 25px;">📎 A lista de convidados atualizada está em anexo (PDF).</p>
 
-            <p style="margin-top: 30px; font-size: 6px; color: #777; text-align: center;">
+            <p style="margin-top: 30px; font-size: 6px; color: #FFD700; text-align: center;">
               Desenvolvido com 💛 por 
-              <a href="https://linkedin.com/in/joaopedrovsilva" target="_blank" style="color: #4b3b0d; text-decoration: none;">João Pedro Vargas</a> 
+              <a href="https://linkedin.com/in/joaopedrovsilva" target="_blank" style="color: #FFD700; text-decoration: none;">João Pedro Vargas</a> 
               e 
-              <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
+              <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #FFD700; text-decoration: none;">Guilherme Mocelin</a>.<br/>
               Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
               © 2025
             </p>
@@ -132,11 +132,11 @@ export default async function handler(req, res) {
             to: email,
             subject: `${prefixoAssunto}Informações Importantes - Confirmação de Presença no Casamento de Caroline & Marcelo`,
             html: `
-              <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
+              <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; background-color: #111; padding: 30px; border-radius: 10px;">
                 <div style="text-align: center;">
-                  <img src="https://i.imgur.com/cxsTmRY.jpeg" alt="Caroline e Marcelo" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;" />
+                  <img src="https://i.imgur.com/cxsTmRY.jpeg" alt="Caroline e Marcelo" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px; border: 3px solid #FFD700;" />
                 </div>
-                <h2 style="color: #e0a100; text-align: center;">🌻 Confirmação de Presença no Casamento 🌻</h2>
+                <h2 style="color: #FFD700; text-align: center;">🌻 Confirmação de Presença no Casamento 🌻</h2>
                 <p>Olá <strong>${nome}</strong>, ${
                   pessoas > 1
                     ? `você confirmou sua presença e de mais ${pessoas - 1} pessoa(s)`
@@ -149,10 +149,10 @@ export default async function handler(req, res) {
                 <em>Se você for um padrinho, receberá as instruções sobre a cor do traje.</em></p>
 
                 <p style="margin-top: 20px;">Dúvidas? Fale com os noivos no WhatsApp:<br/>
-                  👉 <a href="https://wa.me/5551982133389" target="_blank" style="color: #e0a100;">Carol no WhatsApp</a>
+                  👉 <a href="https://wa.me/5551982133389" target="_blank" style="color: #FFD700;">Carol no WhatsApp</a>
                 </p>
 
-                <h4 style="margin-top: 25px; color: #4b3b0d;">👥 Lista de Pessoas que você enviou:</h4>
+                <h4 style="margin-top: 25px; color: #FFD700;">👥 Lista de Pessoas que você enviou:</h4>
                 <ul style="padding-left: 20px;">
                   ${detalhesPessoas.map(p => `<li>${p.nome} (${p.idade}) — ${p.valor}</li>`).join('')}
                 </ul>
@@ -161,20 +161,20 @@ export default async function handler(req, res) {
 
                 <p><strong>✨ Utilize o código Pix Copia e Cola abaixo para realizar o pagamento até <u>30/09/2025</u>:</strong></p>
 
-                <pre onclick="navigator.clipboard.writeText('${codigoPix}')" title="Clique para copiar" style="cursor: pointer; white-space: pre-wrap; word-break: break-word; background: #f9d976; padding: 15px; border-radius: 8px; font-size: 14px; color: #4b3b0d;">
+                <pre onclick="navigator.clipboard.writeText('${codigoPix}')" title="Clique para copiar" style="cursor: pointer; white-space: pre-wrap; word-break: break-word; background: #222; padding: 15px; border-radius: 8px; font-size: 14px; color: #FFD700; border: 1px solid #FFD700;">
                   ${codigoPix}
                 </pre>
 
                 <p style="margin-top: 20px;"><strong>📷 QRCode do Pix:</strong></p>
                 <div style="text-align: center; margin-top: 10px;">
-                  <img src="cid:qrcodepix" alt="QR Code Pix" style="width: 220px; height: 220px; border: 4px solid #f2c14e; border-radius: 10px;" />
+                  <img src="cid:qrcodepix" alt="QR Code Pix" style="width: 220px; height: 220px; border: 4px solid #FFD700; border-radius: 10px;" />
                 </div>
 
-                <p style="margin-top: 30px; font-size: 6px; color: #777; text-align: center;">
+                <p style="margin-top: 30px; font-size: 6px; color: #FFD700; text-align: center;">
                   Desenvolvido com 💛 por 
-                  <a href="https://linkedin.com/in/joaopedrovsilva" target="_blank" style="color: #4b3b0d; text-decoration: none;">João Pedro Vargas</a> 
+                  <a href="https://linkedin.com/in/joaopedrovsilva" target="_blank" style="color: #FFD700; text-decoration: none;">João Pedro Vargas</a> 
                   e 
-                  <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
+                  <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #FFD700; text-decoration: none;">Guilherme Mocelin</a>.<br/>
                   Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
                   © 2025 Purple Labs - Engenharia de Software I.S — CNPJ: 60.272.060/0001-95
                 </p>
@@ -196,22 +196,22 @@ export default async function handler(req, res) {
             to: email,
             subject: `${prefixoAssunto}Sentiremos sua falta - Casamento Caroline & Marcelo`,
             html: `
-              <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
+              <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; background-color: #111; padding: 30px; border-radius: 10px;">
                 <div style="text-align: center;">
-                  <img src="https://i.imgur.com/cxsTmRY.jpeg" alt="Caroline e Marcelo" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;" />
+                  <img src="https://i.imgur.com/cxsTmRY.jpeg" alt="Caroline e Marcelo" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px; border: 3px solid #FFD700;" />
                 </div>
-                <h2 style="color: #e0a100; text-align: center;">🌻 Uma pequena mensagem com carinho 🌻</h2>
+                <h2 style="color: #FFD700; text-align: center;">🌻 Uma pequena mensagem com carinho 🌻</h2>
                 <p>Olá <strong>${nome}</strong>, recebemos sua resposta informando que infelizmente não poderá comparecer ao nosso casamento 😢</p>
                 <p style="margin-top: 15px;">Nossa celebração será intimista, com as pessoas que mais amamos — e você é uma delas!<br/>
                 Sua presença fará muita falta, mas entendemos totalmente e agradecemos de coração 💛</p>
 
                 <p style="margin-top: 20px;">Se mudar de ideia, você ainda pode confirmar presença até <u>30/09/2025</u> 😄</p>
 
-                <p style="margin-top: 30px; font-size: 6px; color: #777; text-align: center;">
+                <p style="margin-top: 30px; font-size: 6px; color: #FFD700; text-align: center;">
                   Desenvolvido com 💛 por 
-                  <a href="https://linkedin.com/in/joaopedrovsilva" target="_blank" style="color: #4b3b0d; text-decoration: none;">João Pedro Vargas</a> 
+                  <a href="https://linkedin.com/in/joaopedrovsilva" target="_blank" style="color: #FFD700; text-decoration: none;">João Pedro Vargas</a> 
                   e 
-                  <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #4b3b0d; text-decoration: none;">Guilherme Mocelin</a>.<br/>
+                  <a href="https://www.linkedin.com/in/guilherme-mocelin-5a6ba3320/" target="_blank" style="color: #FFD700; text-decoration: none;">Guilherme Mocelin</a>.<br/>
                   Exclusivamente para nossos amigos e afilhados Carol & Marcelo.<br/>
                   © 2025 Purple Labs - Engenharia de Software I.S — CNPJ: 60.272.060/0001-95
                 </p>
@@ -224,11 +224,11 @@ export default async function handler(req, res) {
             to: 'carolinefariasadv@gmail.com',
             subject: `${prefixoAssunto}${nome} não poderá comparecer ao casamento`,
             html: `
-              <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #4b3b0d; background-color: #fff8e1; padding: 30px; border-radius: 10px;">
+              <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; background-color: #111; padding: 30px; border-radius: 10px;">
                 <div style="text-align: center;">
-                  <img src="https://i.imgur.com/cxsTmRY.jpeg" alt="Caroline e Marcelo" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;" />
+                  <img src="https://i.imgur.com/cxsTmRY.jpeg" alt="Caroline e Marcelo" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 20px; border: 3px solid #FFD700;" />
                 </div>
-                <h2 style="color: #e0a100; text-align: center;">🌻 Confirmação de Ausência 🌻</h2>
+                <h2 style="color: #FFD700; text-align: center;">🌻 Confirmação de Ausência 🌻</h2>
                 <p><strong>${nome}</strong> informou que <strong>não poderá comparecer</strong> ao casamento.</p>
 
                 <h4 style="margin-top: 20px;">👥 Lista de Nomes Incluídos:</h4>
