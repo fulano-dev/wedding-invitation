@@ -44,7 +44,7 @@ export default function Hero() {
     const CountdownTimer = ({ targetDate }) => {
         const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
         function calculateTimeLeft() {
-            const difference = +new Date(targetDate) - +new Date();
+            const difference = Math.abs(+new Date() - +new Date(targetDate));
             let timeLeft = {};
 
             if (difference > 0) {
@@ -198,17 +198,15 @@ export default function Hero() {
                             className="w-full max-w-2xl h-auto rounded-xl object-cover shadow-md border-4 border-yellow-200"
                           />
                         </div>
-<motion.p
+                        <motion.p
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.4 }}
                             className="text-gray-500 font-light italic text-base sm:text-lg"
                         >
-                            Nós vamos nos casar!
+                            Estamos casados há:
                         </motion.p>
-                        <CountdownTimer targetDate={config.data.date} />
-                        
-                    </div>
+                        <CountdownTimer targetDate={config.data.date} />                    </div>
 
                     <motion.div
                         initial={{ scale: 0 }}
